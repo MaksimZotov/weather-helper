@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/citiesFragment">
+
+    <fragment
+        android:id="@+id/citiesFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.cities.CitiesFragment"
+        android:label="cities_fragment"
+        tools:layout="@layout/cities_fragment" >
+        <action
+            android:id="@+id/action_citiesFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_citiesFragment_to_selectionFragment"
+            app:destination="@id/selectionFragment" />
+        <action
+            android:id="@+id/action_citiesFragment_to_filterFragment2"
+            app:destination="@id/filterFragment" />
+        <action
+            android:id="@+id/action_citiesFragment_to_cityFragment"
+            app:destination="@id/cityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.about.AboutFragment"
+        android:label="about_fragment"
+        tools:layout="@layout/about_fragment" />
+    <fragment
+        android:id="@+id/selectionFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.selection.SelectionFragment"
+        android:label="selection_fragment"
+        tools:layout="@layout/selection_fragment" >
+        <action
+            android:id="@+id/action_selectionFragment_to_cityFragment"
+            app:destination="@id/cityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filterFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.filter.FilterFragment"
+        android:label="filter_fragment"
+        tools:layout="@layout/filter_fragment" />
+    <fragment
+        android:id="@+id/cityFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.city.CityFragment"
+        tools:layout="@layout/city_fragment" />
+</navigation>
