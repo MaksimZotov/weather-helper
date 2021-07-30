@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.CitiesFragmentBinding
 import com.maksimzotov.weatherhelper.presentation.main.ui.BaseFragment
 
@@ -18,12 +19,10 @@ class CitiesFragment : BaseFragment<CitiesFragmentBinding>(CitiesFragmentBinding
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding.viewModel = viewModel
-        viewModel.checkDataBindingWithInclude.observe(viewLifecycleOwner, { boolean ->
-            if (boolean) {
-                Toast.makeText(context, "Everything works fine!", Toast.LENGTH_SHORT).show()
-            }
-        })
+
+        binding.filterBottomSheet.addCity.setOnClickListener {
+            findNavController().navigate(R.id.action_citiesFragment_to_selectionFragment)
+        }
         return binding.root
     }
 }

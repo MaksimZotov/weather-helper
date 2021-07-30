@@ -17,7 +17,7 @@
             android:id="@+id/action_citiesFragment_to_selectionFragment"
             app:destination="@id/selectionFragment" />
         <action
-            android:id="@+id/action_citiesFragment_to_filterFragment2"
+            android:id="@+id/action_citiesFragment_to_filterFragment"
             app:destination="@id/filterFragment" />
         <action
             android:id="@+id/action_citiesFragment_to_cityFragment"
