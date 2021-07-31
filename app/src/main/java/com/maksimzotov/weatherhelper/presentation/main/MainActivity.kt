@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val settingsFragment = R.id.settingsFragment
         val aboutFragment = R.id.aboutFragment
 
-        val onClickItem: (item: MenuItem) -> Boolean = { item ->
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
             val curFragment = navController.currentDestination?.id
             val curItem = item.itemId
             if (curItem == homeItem) {
@@ -55,6 +55,5 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavigationView.selectedItemId = item.itemId
             true
         }
-        binding.bottomNavigationView.setOnItemSelectedListener(onClickItem)
     }
 }
