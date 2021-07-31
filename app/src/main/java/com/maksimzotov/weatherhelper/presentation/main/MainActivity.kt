@@ -3,6 +3,7 @@ package com.maksimzotov.weatherhelper.presentation.main
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.maksimzotov.weatherhelper.R
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val settingsFragment = R.id.settingsFragment
         val aboutFragment = R.id.aboutFragment
 
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+        val onClickItem: (item: MenuItem) -> Boolean = { item ->
             val curFragment = navController.currentDestination?.id
             val curItem = item.itemId
             if (curItem == homeItem) {
@@ -46,7 +47,14 @@ class MainActivity : AppCompatActivity() {
             } else if (curItem == aboutItem && curFragment != aboutFragment) {
                 navController.navigate(R.id.aboutFragment)
             }
-            return@setOnItemSelectedListener true
+            binding.navDrawer.closeDrawers()
+            true
         }
+
+        binding.navigationView.setNavigationItemSelectedListener { item ->
+            binding.bottomNavigationView.selectedItemId = item.itemId
+            true
+        }
+        binding.bottomNavigationView.setOnItemSelectedListener(onClickItem)
     }
 }

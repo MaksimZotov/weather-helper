@@ -8,7 +8,6 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/nav_drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.main.MainActivity">
@@ -92,12 +91,13 @@
             android:layout_height="wrap_content"
             android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/bottom_nav_menu" >
+            app:menu="@menu/nav_menu" >
 
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
 
         <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/nav_drawer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
@@ -119,7 +119,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 app:headerLayout="@layout/nav_drawer_header"
-                app:menu="@menu/nav_drawer_menu" />
+                app:menu="@menu/nav_menu" />
 
         </androidx.drawerlayout.widget.DrawerLayout>
 
