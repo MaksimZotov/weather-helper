@@ -16,7 +16,7 @@
             android:layout_height="72dp">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addCity"
+                android:id="@+id/add_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
