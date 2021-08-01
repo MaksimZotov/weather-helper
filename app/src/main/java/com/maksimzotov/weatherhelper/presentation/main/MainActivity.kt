@@ -4,19 +4,22 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.ActivityMainBinding
+import com.maksimzotov.weatherhelper.presentation.main.listeners.OnBottomNavVisibilityChangeListener
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnBottomNavVisibilityChangeListener {
+
+    private lateinit var binding: ActivityMainBinding
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityMainBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val navController = findNavController(R.id.nav_host_fragment)
 
@@ -55,5 +58,13 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNavigationView.selectedItemId = item.itemId
             true
         }
+    }
+
+    override fun show() {
+        binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    override fun hide() {
+        binding.bottomNavigationView.visibility = View.GONE
     }
 }

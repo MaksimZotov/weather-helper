@@ -7,16 +7,68 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Switch
-            android:id="@+id/switch_dark_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_weight="0"
-            android:text="Dark Theme         "
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize">
+
+
+                <ImageButton
+                    android:id="@+id/toolbar_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:background="@drawable/ic_baseline_menu_24"
+                    android:backgroundTint="?attr/colorElementsOnBG" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Settings"
+                    android:textColor="?attr/colorElementsOnBG"
+                    android:textSize="24dp" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_dark_theme"
+                android:layout_width="192dp"
+                android:layout_height="wrap_content"
+                android:text="Dark Theme"
+                android:layout_gravity="center"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_bottom_nav"
+                android:layout_width="192dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Bottom Navigation"
+                android:layout_gravity="center"/>
+
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

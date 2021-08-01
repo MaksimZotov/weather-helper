@@ -1,17 +1,11 @@
 package com.maksimzotov.weatherhelper.presentation.ui.settings
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
-import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.SettingsFragmentBinding
-import com.maksimzotov.weatherhelper.presentation.main.MainActivity
+import com.maksimzotov.weatherhelper.presentation.main.listeners.OnBottomNavVisibilityChangeListener
 import com.maksimzotov.weatherhelper.presentation.main.ui.BaseFragment
 
 class SettingsFragment : BaseFragment<SettingsFragmentBinding>(SettingsFragmentBinding::inflate) {
@@ -26,6 +20,15 @@ class SettingsFragment : BaseFragment<SettingsFragmentBinding>(SettingsFragmentB
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
+            switchBottomNav.setOnCheckedChangeListener { buttonView, isChecked ->
+                val onBottomNavVisibilityChangeListener =
+                    activity as OnBottomNavVisibilityChangeListener
+                if (isChecked) {
+                    onBottomNavVisibilityChangeListener.show()
+                } else {
+                    onBottomNavVisibilityChangeListener.hide()
                 }
             }
         }
