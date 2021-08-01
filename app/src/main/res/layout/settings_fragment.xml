@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="24dp"
                     android:layout_marginRight="24dp"
-                    android:background="@drawable/ic_baseline_menu_24"
+                    android:background="@drawable/ic_menu_24"
                     android:backgroundTint="?attr/colorElementsOnBG" />
 
                 <TextView
