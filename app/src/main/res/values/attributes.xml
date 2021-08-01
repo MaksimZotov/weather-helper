@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorNavDrawerHeaderBG" format="color" />
+    <attr name="colorNavDrawerMenuBG" format="color" />
+    <attr name="colorRecyclerViewItemBG" format="color" />
+    <attr name="colorViewBG" format="color" />
+    <attr name="colorButtonBG" format="color" />
+    <attr name="colorElementsOnBG" format="color" />
+    <attr name="colorBottomNavBG" format="color" />
+    <attr name="colorElementsInBottomNav" format="color" />
+    <attr name="colorElementsInNavDrawer" format="color" />
+</resources>

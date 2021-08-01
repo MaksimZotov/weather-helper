@@ -16,8 +16,6 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/Theme.WeatherHelper"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,7 +24,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:minHeight="?attr/actionBarSize">
+                android:minHeight="?attr/actionBarSize"
+                android:background="?attr/colorPrimary">
 
                 <ImageButton
                     android:layout_width="wrap_content"
@@ -34,7 +33,6 @@
                     android:layout_marginLeft="24dp"
                     android:layout_marginRight="24dp"
                     android:background="@drawable/ic_arrow_back_24"
-                    android:backgroundTint="@color/white"
                     android:visibility="gone" />
 
                 <ImageButton
@@ -43,7 +41,7 @@
                     android:layout_marginLeft="24dp"
                     android:layout_marginRight="24dp"
                     android:background="@drawable/ic_baseline_menu_24"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="?attr/colorElementsOnBG"
                     android:visibility="visible" />
 
                 <TextView
@@ -51,8 +49,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
                     android:text="Cities"
-                    android:textColor="@color/white"
                     android:textSize="24dp"
+                    android:textColor="?attr/colorElementsOnBG"
                     android:visibility="visible" />
 
                 <EditText
@@ -60,9 +58,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
                     android:layout_marginRight="48dp"
-                    android:backgroundTint="@color/white"
+                    android:backgroundTint="?attr/colorElementsOnBG"
                     android:hint="Enter"
-                    android:textColor="@color/white"
+                    android:textColorHint="?attr/colorElementsOnBG"
+                    android:textColor="?attr/colorElementsOnBG"
                     android:visibility="gone" />
 
                 <ImageButton
@@ -71,6 +70,7 @@
                     android:layout_gravity="end"
                     android:layout_marginRight="24dp"
                     android:background="@drawable/ic_more_vert_24"
+                    android:backgroundTint="?attr/colorElementsOnBG"
                     android:visibility="visible" />
 
                 <ImageButton
@@ -79,6 +79,7 @@
                     android:layout_gravity="end"
                     android:layout_marginRight="24dp"
                     android:background="@drawable/ic_search_24"
+                    android:backgroundTint="?attr/colorElementsOnBG"
                     android:visibility="visible" />
 
             </androidx.appcompat.widget.Toolbar>
@@ -89,8 +90,10 @@
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:background="?attr/colorBottomNavBG"
+            app:itemIconTint="?attr/colorElementsInBottomNav"
+            app:itemTextColor="?attr/colorElementsInBottomNav"
             app:menu="@menu/nav_menu" >
 
 
@@ -118,6 +121,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
+                android:background="?attr/colorNavDrawerMenuBG"
+                app:itemIconTint="?attr/colorElementsInNavDrawer"
+                app:itemTextColor="?attr/colorElementsInNavDrawer"
                 app:headerLayout="@layout/nav_drawer_header"
                 app:menu="@menu/nav_menu" />
 
