@@ -8,11 +8,12 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#0270B3</item>
         <item name="colorSecondaryVariant">#00708C</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondary">#292929</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="colorNavDrawerHeaderBG">#00D88C</item>
         <item name="colorNavDrawerText">@color/white</item>
+        <item name="colorBottomSheetBG">#0094D8</item>
     </style>
 </resources>
