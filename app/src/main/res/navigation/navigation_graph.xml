@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/citiesFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.cities.CitiesFragment"
-        android:label="cities_fragment"
-        tools:layout="@layout/cities_fragment" >
+        android:label="Cities"
+        tools:layout="@layout/cities_fragment">
         <action
             android:id="@+id/action_citiesFragment_to_selectionFragment"
             app:destination="@id/selectionFragment" />
@@ -23,13 +23,13 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.about.AboutFragment"
-        android:label="about_fragment"
+        android:label="About"
         tools:layout="@layout/about_fragment" />
     <fragment
         android:id="@+id/selectionFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.selection.SelectionFragment"
-        android:label="selection_fragment"
-        tools:layout="@layout/selection_fragment" >
+        android:label="Selection"
+        tools:layout="@layout/selection_fragment">
         <action
             android:id="@+id/action_selectionFragment_to_cityFragment"
             app:destination="@id/cityFragment" />
@@ -37,15 +37,16 @@
     <fragment
         android:id="@+id/filterFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.filter.FilterFragment"
-        android:label="filter_fragment"
+        android:label="Filter"
         tools:layout="@layout/filter_fragment" />
     <fragment
         android:id="@+id/cityFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.city.CityFragment"
+        android:label="City"
         tools:layout="@layout/city_fragment" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.SettingsFragment"
-        android:label="SettingsFragment"
-        tools:layout="@layout/settings_fragment"/>
+        android:label="Settings"
+        tools:layout="@layout/settings_fragment" />
 </navigation>

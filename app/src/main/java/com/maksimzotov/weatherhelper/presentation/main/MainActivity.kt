@@ -7,6 +7,9 @@ import android.view.MenuItem
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.ActivityMainBinding
 import com.maksimzotov.weatherhelper.presentation.main.listeners.OnBottomNavVisibilityChangeListener
@@ -14,6 +17,7 @@ import com.maksimzotov.weatherhelper.presentation.main.listeners.OnBottomNavVisi
 class MainActivity : AppCompatActivity(), OnBottomNavVisibilityChangeListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +62,22 @@ class MainActivity : AppCompatActivity(), OnBottomNavVisibilityChangeListener {
             binding.bottomNavigationView.selectedItemId = item.itemId
             true
         }
+
+        setSupportActionBar(binding.toolbar)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.citiesFragment,
+                R.id.settingsFragment,
+                R.id.aboutFragment
+            ),
+            binding.navDrawer
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun show() {
