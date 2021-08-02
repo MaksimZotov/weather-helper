@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.ui.indicators.recyclerview
+package com.maksimzotov.weatherhelper.presentation.ui.city.indicators.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View

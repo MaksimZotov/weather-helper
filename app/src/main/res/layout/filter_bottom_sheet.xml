@@ -6,26 +6,20 @@
     <LinearLayout
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="136dp"
+        app:behavior_peekHeight="80dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="264dp">
+        android:layout_height="256dp"
+        android:background="@drawable/bottom_sheet">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="72dp">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/add_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/ic_add_24" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_remove_24"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="center|top">
+        </ImageView>
 
 
         <TextView
@@ -33,13 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:gravity="center"
-            android:text="^ Filter ^"
+            android:text="Filter"
             android:fontFamily="sans-serif-medium"
-            android:textSize="24sp" />
+            android:textSize="16sp" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="128dp" />
+            android:layout_height="192dp" />
 
     </LinearLayout>
 </layout>

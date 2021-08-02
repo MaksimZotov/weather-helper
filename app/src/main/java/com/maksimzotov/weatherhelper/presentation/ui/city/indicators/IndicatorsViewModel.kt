@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.ui.indicators
+package com.maksimzotov.weatherhelper.presentation.ui.city.indicators
 
 import androidx.lifecycle.ViewModel
 

@@ -38,7 +38,7 @@ class CitiesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.filterBottomSheet.addCity.setOnClickListener {
+        binding.addCity.setOnClickListener {
             //findNavController().navigate(R.id.selectionFragment)
             citiesAdapter.cities.add(City("Some name", Temperature(-14, 35)))
             citiesAdapter.notifyDataSetChanged()

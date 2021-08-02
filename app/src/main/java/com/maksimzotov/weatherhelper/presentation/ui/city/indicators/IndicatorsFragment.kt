@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.ui.indicators
+package com.maksimzotov.weatherhelper.presentation.ui.city.indicators
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -13,8 +13,7 @@ import com.maksimzotov.weatherhelper.databinding.IndicatorsFragmentBinding
 import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
 import com.maksimzotov.weatherhelper.presentation.main.ui.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.ui.cities.CitiesViewModel
-import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
-import com.maksimzotov.weatherhelper.presentation.ui.indicators.recyclerview.IndicatorsAdapter
+import com.maksimzotov.weatherhelper.presentation.ui.city.indicators.recyclerview.IndicatorsAdapter
 
 class IndicatorsFragment : BaseFragment<IndicatorsFragmentBinding>(IndicatorsFragmentBinding::inflate) {
 
