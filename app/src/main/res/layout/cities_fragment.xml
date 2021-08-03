@@ -16,7 +16,7 @@
                 android:id="@+id/indicators_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="108dp"
+                android:layout_marginBottom="44dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toTopOf="parent">
 

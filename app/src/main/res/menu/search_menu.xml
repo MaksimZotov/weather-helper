@@ -8,8 +8,4 @@
         android:title="Search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom" />
-    <item
-        android:icon="@drawable/ic_filter_alt_24"
-        android:title="Item"
-        app:showAsAction="always" />
 </menu>
