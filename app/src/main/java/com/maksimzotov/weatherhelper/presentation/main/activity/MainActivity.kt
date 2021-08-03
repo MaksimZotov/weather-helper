@@ -1,12 +1,13 @@
 package com.maksimzotov.weatherhelper.presentation.main.activity
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -91,10 +92,12 @@ class MainActivity :
         super.onBackPressed()
         if (prevDestination == settingsFragment || prevDestination == aboutFragment) {
             val curDestination = navController.currentDestination?.id
-            binding.bottomNavigationView.selectedItemId = when (curDestination) {
-                settingsFragment -> settingsItem
-                aboutFragment -> aboutItem
-                else -> homeItem
+            binding.bottomNavigationView.menu.apply {
+                when (curDestination) {
+                    aboutFragment -> getItem(2)
+                    settingsFragment -> getItem(1)
+                    else -> getItem(0)
+                }.isChecked = true
             }
         }
     }
