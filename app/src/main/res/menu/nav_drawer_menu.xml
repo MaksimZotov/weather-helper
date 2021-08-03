@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/item_home"
+            android:icon="@drawable/ic_home_24"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/item_settings"
+            android:icon="@drawable/ic_settings_24"
+            android:title="Settings"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_info"
+            android:title="info">
+
+            <menu>
+                <item
+                    android:id="@+id/item_about"
+                    android:icon="@drawable/ic_info_24"
+                    android:title="About"/>
+            </menu>
+
+        </item>
+    </group>
+
+</menu>

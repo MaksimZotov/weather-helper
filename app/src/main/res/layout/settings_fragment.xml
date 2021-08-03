@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="48dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bottom Navigation"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16dp"
+                android:textColor="?attr/colorOnSecondary"/>
+
+            <RadioGroup
+                android:id="@+id/radio_group_bottom_nav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/bottom_nav_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On" />
+
+                <RadioButton
+                    android:id="@+id/bottom_nav_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Off" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_dark_theme"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="Dark Theme" />
+
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorNavDrawerHeaderBG" format="color" />
+    <attr name="colorNavDrawerText" format="color" />
+    <attr name="colorBottomSheetBG" format="color" />
+</resources>
