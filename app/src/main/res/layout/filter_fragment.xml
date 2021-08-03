@@ -19,7 +19,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Temperature: [+15; 35]"
+                android:text="Temperature: [+15; +35]"
                 android:layout_marginStart="16dp"
                 android:textSize="24dp" />
 
