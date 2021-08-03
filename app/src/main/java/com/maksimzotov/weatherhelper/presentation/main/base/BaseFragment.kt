@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.main.ui
+package com.maksimzotov.weatherhelper.presentation.main.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

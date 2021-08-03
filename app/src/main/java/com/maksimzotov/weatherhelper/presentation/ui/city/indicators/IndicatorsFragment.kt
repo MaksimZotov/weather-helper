@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.maksimzotov.weatherhelper.databinding.IndicatorsFragmentBinding
 import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
-import com.maksimzotov.weatherhelper.presentation.main.ui.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.ui.cities.CitiesViewModel
 import com.maksimzotov.weatherhelper.presentation.ui.city.indicators.recyclerview.IndicatorsAdapter
 

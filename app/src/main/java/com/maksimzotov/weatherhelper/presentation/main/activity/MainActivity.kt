@@ -1,20 +1,24 @@
-package com.maksimzotov.weatherhelper.presentation.main
+package com.maksimzotov.weatherhelper.presentation.main.activity
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.ActivityMainBinding
+import com.maksimzotov.weatherhelper.presentation.main.listeners.NavDrawerLocker
 import com.maksimzotov.weatherhelper.presentation.main.listeners.OnBottomNavVisibilityChangeListener
 
-class MainActivity : AppCompatActivity(), OnBottomNavVisibilityChangeListener {
+class MainActivity :
+    AppCompatActivity(),
+    OnBottomNavVisibilityChangeListener,
+    NavDrawerLocker {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -86,5 +90,13 @@ class MainActivity : AppCompatActivity(), OnBottomNavVisibilityChangeListener {
 
     override fun hide() {
         binding.bottomNavigationView.visibility = View.GONE
+    }
+
+    override fun lock() {
+        binding.navDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+
+    override fun unlock() {
+        binding.navDrawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 }

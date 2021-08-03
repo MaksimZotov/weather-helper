@@ -17,12 +17,14 @@ import com.maksimzotov.weatherhelper.databinding.CitiesFragmentBinding
 import com.maksimzotov.weatherhelper.domain.entities.cities.City
 import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
 import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
-import com.maksimzotov.weatherhelper.presentation.main.ui.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
+import com.maksimzotov.weatherhelper.presentation.main.listeners.NavDrawerLocker
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
 
 
 class CitiesFragment :
-    BaseFragment<CitiesFragmentBinding>(CitiesFragmentBinding::inflate),
+    TopLevelFragment<CitiesFragmentBinding>(CitiesFragmentBinding::inflate),
     SearchView.OnQueryTextListener,
     OnItemClickListener {
 
@@ -114,7 +116,6 @@ class CitiesFragment :
 
         }).attachToRecyclerView(recyclerView)
     }
-
 
     override fun onItemClick(position: Int) {
         findNavController().navigate(R.id.cityFragment)

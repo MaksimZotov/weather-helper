@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
+import com.maksimzotov.weatherhelper.databinding.CitiesFragmentBinding
 import com.maksimzotov.weatherhelper.databinding.SettingsFragmentBinding
 import com.maksimzotov.weatherhelper.presentation.main.listeners.OnBottomNavVisibilityChangeListener
-import com.maksimzotov.weatherhelper.presentation.main.ui.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
+import com.maksimzotov.weatherhelper.presentation.main.listeners.NavDrawerLocker
 
-class SettingsFragment : BaseFragment<SettingsFragmentBinding>(SettingsFragmentBinding::inflate) {
+class SettingsFragment
+    : TopLevelFragment<SettingsFragmentBinding>(SettingsFragmentBinding::inflate) {
 
     private val viewModel by viewModels<SettingsViewModel>()
 
