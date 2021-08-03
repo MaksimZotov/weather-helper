@@ -1,25 +1,23 @@
 package com.maksimzotov.weatherhelper.presentation.ui.cities
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.app.Activity
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.CitiesFragmentBinding
 import com.maksimzotov.weatherhelper.domain.entities.cities.City
 import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
-import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
-import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
-import com.maksimzotov.weatherhelper.presentation.main.listeners.NavDrawerLocker
+import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
 
 
@@ -57,6 +55,13 @@ class CitiesFragment :
         recyclerView.addItemDecoration(
             DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity()
+            .getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
     }
 
     override fun onItemClick(position: Int) {
