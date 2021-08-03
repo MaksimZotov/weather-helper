@@ -3,35 +3,53 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:gravity="center">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="48dp">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_dark_theme"
-                android:layout_width="192dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dark Theme"
-                android:layout_gravity="center"/>
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_bottom_nav"
-                android:layout_width="192dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:text="Bottom Navigation"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16dp"
+                android:textColor="?attr/colorOnSecondary"/>
 
+            <RadioGroup
+                android:id="@+id/radio_group_bottom_nav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/bottom_nav_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="On" />
+
+                <RadioButton
+                    android:id="@+id/bottom_nav_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Off" />
+
+            </RadioGroup>
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_dark_theme"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="Dark Theme" />
+
+
+    </LinearLayout>
 </layout>

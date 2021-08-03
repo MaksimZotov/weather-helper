@@ -22,10 +22,10 @@ class SettingsFragment : BaseFragment<SettingsFragmentBinding>(SettingsFragmentB
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
             }
-            switchBottomNav.setOnCheckedChangeListener { buttonView, isChecked ->
+            radioGroupBottomNav.setOnCheckedChangeListener { group, checkedId ->
                 val onBottomNavVisibilityChangeListener =
                     activity as OnBottomNavVisibilityChangeListener
-                if (isChecked) {
+                if (checkedId == bottomNavOn.id) {
                     onBottomNavVisibilityChangeListener.show()
                 } else {
                     onBottomNavVisibilityChangeListener.hide()
