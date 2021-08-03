@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -23,6 +24,13 @@ class MainActivity :
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private val homeItem = R.id.item_home
+    private val settingsItem = R.id.item_settings
+    private val aboutItem = R.id.item_about
+    private val citiesFragment = R.id.citiesFragment
+    private val settingsFragment = R.id.settingsFragment
+    private val aboutFragment = R.id.aboutFragment
+
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +38,6 @@ class MainActivity :
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         val navController = findNavController(R.id.nav_host_fragment)
-
-        val homeItem = R.id.item_home
-        val settingsItem = R.id.item_settings
-        val aboutItem = R.id.item_about
-        val citiesFragment = R.id.citiesFragment
-        val settingsFragment = R.id.settingsFragment
-        val aboutFragment = R.id.aboutFragment
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             val curFragment = navController.currentDestination?.id
@@ -82,6 +83,20 @@ class MainActivity :
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        val prevDestination = navController.currentDestination?.id
+        super.onBackPressed()
+        if (prevDestination == settingsFragment || prevDestination == aboutFragment) {
+            val curDestination = navController.currentDestination?.id
+            binding.bottomNavigationView.selectedItemId = when (curDestination) {
+                settingsFragment -> settingsItem
+                aboutFragment -> aboutItem
+                else -> homeItem
+            }
+        }
     }
 
     override fun show() {
