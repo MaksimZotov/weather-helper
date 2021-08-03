@@ -42,6 +42,7 @@ class MainActivity :
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             val curFragment = navController.currentDestination?.id
+                ?: return@setOnItemSelectedListener true
             val curItem = item.itemId
             if (curItem == homeItem) {
                 if (curFragment !in listOf(settingsFragment, aboutFragment)) {
@@ -55,10 +56,18 @@ class MainActivity :
                             }
                     navController.popBackStack(lastFragmentInHome.destination.id, false)
                 }
-            } else if (curItem == settingsItem && curFragment != settingsFragment) {
-                navController.navigate(R.id.settingsFragment)
-            } else if (curItem == aboutItem && curFragment != aboutFragment) {
-                navController.navigate(R.id.aboutFragment)
+            } else {
+                val nextFragment = when {
+                    curItem == settingsItem && curFragment != settingsFragment -> settingsFragment
+                    curItem == aboutItem && curFragment != aboutFragment -> aboutFragment
+                    else -> return@setOnItemSelectedListener true
+                }
+                if (navController.backStack.any {it.destination.id == nextFragment}) {
+                    navController.popBackStack()
+                    navController.popBackStack()
+                    navController.navigate(curFragment)
+                }
+                navController.navigate(nextFragment)
             }
             binding.navDrawer.closeDrawers()
             true
@@ -90,14 +99,15 @@ class MainActivity :
         val navController = findNavController(R.id.nav_host_fragment)
         val prevDestination = navController.currentDestination?.id
         super.onBackPressed()
+        val curDestination = navController.currentDestination?.id
         if (prevDestination == settingsFragment || prevDestination == aboutFragment) {
-            val curDestination = navController.currentDestination?.id
             binding.bottomNavigationView.menu.apply {
-                when (curDestination) {
+                val curItem = when (curDestination) {
                     aboutFragment -> getItem(2)
                     settingsFragment -> getItem(1)
                     else -> getItem(0)
-                }.isChecked = true
+                }
+                curItem.isChecked = true
             }
         }
     }
