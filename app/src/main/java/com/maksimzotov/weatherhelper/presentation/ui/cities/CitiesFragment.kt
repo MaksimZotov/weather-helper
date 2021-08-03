@@ -46,7 +46,10 @@ class CitiesFragment :
             citiesAdapter.notifyDataSetChanged()
         }
 
-
+        binding.filterBottomSheet.editFilter.setOnClickListener {
+            findNavController().navigate(R.id.filterFragment)
+        }
+        
         val recyclerView = binding.indicatorsRecyclerView
 
         citiesAdapter = CitiesAdapter(

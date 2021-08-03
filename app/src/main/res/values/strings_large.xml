@@ -8,4 +8,8 @@
         <item>Temperate climate</item>
         <item>Dry climate</item>
     </string-array>
+    <array name="initial_range_slider_values">
+        <item>15.0</item>
+        <item>35.0</item>
+    </array>
 </resources>
