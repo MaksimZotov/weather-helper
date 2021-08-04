@@ -6,8 +6,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -31,6 +33,7 @@ class MainActivity :
     private val citiesFragment = R.id.citiesFragment
     private val settingsFragment = R.id.settingsFragment
     private val aboutFragment = R.id.aboutFragment
+
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +91,33 @@ class MainActivity :
             binding.navDrawer
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+
+        val activityViewModel =
+            ViewModelProvider(this).get(MainActivityViewModel::class.java)
+
+        val darkTheme = activityViewModel.darkTheme.value
+        if (darkTheme != null && darkTheme.isAble) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+
+        activityViewModel.bottomNavigation.observe(this, { bottomNavigation ->
+            bottomNavigation ?: return@observe
+            if (bottomNavigation.isAble) {
+                show()
+            } else {
+                hide()
+            }
+        })
+
+        activityViewModel.darkTheme.observe(this, { darkTheme ->
+            darkTheme ?: return@observe
+            if (darkTheme.isAble) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
