@@ -18,11 +18,11 @@ class SettingsViewModel(application: Application): AndroidViewModel(application)
     )
 
     fun showBottomNavigation() = viewModelScope.launch(Dispatchers.IO) {
-            settingsRepo.setBottomNavigation(BottomNavigation(true))
+        settingsRepo.setBottomNavigation(BottomNavigation(true))
     }
 
     fun hideBottomNavigation() = viewModelScope.launch(Dispatchers.IO) {
-            settingsRepo.setBottomNavigation(BottomNavigation(false))
+        settingsRepo.setBottomNavigation(BottomNavigation(false))
     }
 
     fun switchToDarkTheme() = viewModelScope.launch(Dispatchers.IO) {
