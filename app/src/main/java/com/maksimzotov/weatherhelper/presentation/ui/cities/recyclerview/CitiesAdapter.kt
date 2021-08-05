@@ -8,11 +8,11 @@ import com.maksimzotov.weatherhelper.domain.entities.cities.City
 import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
 
 class CitiesAdapter (
-    var cities: List<City>,
+    var cities: MutableList<City>,
     private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
 
-    fun setData(cities: List<City>) {
+    fun setData(cities: MutableList<City>) {
         this.cities = cities
         notifyDataSetChanged()
     }

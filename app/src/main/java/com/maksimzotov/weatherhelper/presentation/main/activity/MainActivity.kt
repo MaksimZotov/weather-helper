@@ -2,12 +2,12 @@ package com.maksimzotov.weatherhelper.presentation.main.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -31,6 +31,7 @@ class MainActivity :
     private val citiesFragment = R.id.citiesFragment
     private val settingsFragment = R.id.settingsFragment
     private val aboutFragment = R.id.aboutFragment
+
 
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,6 +89,33 @@ class MainActivity :
             binding.navDrawer
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+
+        val settingsSharedViewModel =
+            ViewModelProvider(this).get(SettingsSharedViewModel::class.java)
+
+        val darkTheme = settingsSharedViewModel.darkTheme.value
+        if (darkTheme != null && darkTheme.isAble) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+
+        settingsSharedViewModel.bottomNavigation.observe(this, { bottomNavigation ->
+            bottomNavigation ?: return@observe
+            if (bottomNavigation.isAble) {
+                show()
+            } else {
+                hide()
+            }
+        })
+
+        settingsSharedViewModel.darkTheme.observe(this, { darkTheme ->
+            darkTheme ?: return@observe
+            if (darkTheme.isAble) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
