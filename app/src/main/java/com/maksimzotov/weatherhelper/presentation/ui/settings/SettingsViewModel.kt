@@ -2,6 +2,8 @@ package com.maksimzotov.weatherhelper.presentation.ui.settings
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.maksimzotov.weatherhelper.data.android.AndroidSettingsDatabase
 import com.maksimzotov.weatherhelper.data.android.AndroidSettingsRepository

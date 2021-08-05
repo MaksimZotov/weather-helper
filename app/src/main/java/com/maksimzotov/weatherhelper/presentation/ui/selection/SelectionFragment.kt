@@ -38,7 +38,7 @@ class SelectionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        citiesAdapter = CitiesAdapter(citiesStub.toList(), this)
+        citiesAdapter = CitiesAdapter(citiesStub.toMutableList(), this)
         val recyclerView = binding.citiesRecyclerView
         recyclerView.adapter = citiesAdapter
         recyclerView.addItemDecoration(
@@ -58,7 +58,7 @@ class SelectionFragment :
         val filter = query?.lowercase(Locale.getDefault()) ?: return true
         citiesAdapter.setData(citiesStub.filter {
             it.name.lowercase(Locale.getDefault()).startsWith(filter)
-        })
+        }.toMutableList())
         return true
     }
 

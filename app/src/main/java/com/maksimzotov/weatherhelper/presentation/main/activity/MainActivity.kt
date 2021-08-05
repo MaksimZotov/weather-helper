@@ -2,8 +2,6 @@ package com.maksimzotov.weatherhelper.presentation.main.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -93,15 +91,15 @@ class MainActivity :
         setupActionBarWithNavController(navController, appBarConfiguration)
 
 
-        val activityViewModel =
-            ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        val settingsSharedViewModel =
+            ViewModelProvider(this).get(SettingsSharedViewModel::class.java)
 
-        val darkTheme = activityViewModel.darkTheme.value
+        val darkTheme = settingsSharedViewModel.darkTheme.value
         if (darkTheme != null && darkTheme.isAble) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
 
-        activityViewModel.bottomNavigation.observe(this, { bottomNavigation ->
+        settingsSharedViewModel.bottomNavigation.observe(this, { bottomNavigation ->
             bottomNavigation ?: return@observe
             if (bottomNavigation.isAble) {
                 show()
@@ -110,7 +108,7 @@ class MainActivity :
             }
         })
 
-        activityViewModel.darkTheme.observe(this, { darkTheme ->
+        settingsSharedViewModel.darkTheme.observe(this, { darkTheme ->
             darkTheme ?: return@observe
             if (darkTheme.isAble) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
