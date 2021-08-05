@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.maksimzotov.weatherhelper.data.android.AndroidSettingsDatabase
 import com.maksimzotov.weatherhelper.data.android.AndroidSettingsRepository
-import com.maksimzotov.weatherhelper.data.android.BottomNavigation
-import com.maksimzotov.weatherhelper.data.android.DarkTheme
+import com.maksimzotov.weatherhelper.presentation.entities.BottomNavigation
+import com.maksimzotov.weatherhelper.presentation.entities.DarkTheme
 
 class MainActivityViewModel(application: Application): AndroidViewModel(application)  {
     private val settingsRepo = AndroidSettingsRepository(

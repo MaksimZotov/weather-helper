@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.maksimzotov.weatherhelper.presentation.entities.BottomNavigation
+import com.maksimzotov.weatherhelper.presentation.entities.DarkTheme
+import com.maksimzotov.weatherhelper.presentation.entities.Temperature
 
 @Database(
     entities = [

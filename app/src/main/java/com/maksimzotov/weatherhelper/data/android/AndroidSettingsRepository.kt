@@ -1,5 +1,8 @@
 package com.maksimzotov.weatherhelper.data.android
 
+import com.maksimzotov.weatherhelper.presentation.entities.BottomNavigation
+import com.maksimzotov.weatherhelper.presentation.entities.DarkTheme
+import com.maksimzotov.weatherhelper.presentation.entities.Temperature
 import kotlinx.coroutines.flow.Flow
 
 class AndroidSettingsRepository(private val androidSettingsDao: AndroidSettingsDao) {
