@@ -33,9 +33,16 @@ class SettingsFragment
             }
         }
 
+
+        // Passing the activity to ViewModelProvider (i.e. using the shared view model
+        // MainActivityViewModel) in order to show the settings state immediately.
+        // If SettingsViewModel is used, a user will see animations of switchers and
+        // radio buttons after opening the current fragment. In this case even
+        // invoking jumpDrawablesToCurrentState() does not help.
+        // The same thing in the Indicators fragment
         val activityViewModel =
-            ViewModelProvider(requireActivity()) // passing the activity in order to show
-                .get(MainActivityViewModel::class.java) // the settings state immediately
+            ViewModelProvider(requireActivity())
+                .get(MainActivityViewModel::class.java)
 
         binding.apply {
             activityViewModel.bottomNavigation.observe(viewLifecycleOwner, { bottomNavigation ->
