@@ -25,9 +25,9 @@ class SelectionFragment :
     private val viewModel by viewModels<SelectionViewModel>()
     private lateinit var citiesAdapter: CitiesAdapter
     private val citiesStub = setOf(
-        City("Moscow", Temperature(0, 5)),
-        City("Kiev", Temperature(5, 10)),
-        City("Minsk", Temperature(10, 15))
+        City("Moscow", mapOf("Today" to Temperature(0, 5))),
+        City("Kiev", mapOf("Today" to Temperature(5, 10))),
+        City("Minsk", mapOf("Today" to Temperature(10, 15)))
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
