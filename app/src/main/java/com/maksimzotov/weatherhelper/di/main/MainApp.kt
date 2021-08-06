@@ -15,8 +15,7 @@ class MainApp : Application() {
     }
 }
 
-val Context.appComponent: AppComponent
-    get() = when (this) {
+val Context.appComponent: AppComponent get() = when (this) {
     is MainApp -> appComponent
     else -> applicationContext.appComponent
 }
