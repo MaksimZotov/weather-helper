@@ -22,12 +22,13 @@ class CityDeserializer : JsonDeserializer<City> {
         typeOfT: Type?,
         context: JsonDeserializationContext?
     ): City {
-        val jsonData = json?.toString()
-            ?: throw IllegalArgumentException("Incorrect JSON format")
-        return createCityByJson(jsonData)
+        val jsonTemp = json ?: throw IllegalArgumentException("json must not be null")
+        val jsonData = jsonTemp.toString()
+        val name = jsonTemp.asJsonObject.get("city").asJsonObject.get("name").toString()
+        return City(name, getTemperaturesFromJson(jsonData))
     }
 
-    fun createCityByJson(jsonData: String): City {
+    private fun getTemperaturesFromJson(jsonData: String): Map<String, Temperature> {
         val matches = mainRegex.findAll(jsonData)
         val parsedJsonData = matches.map { it.value }.joinToString().split(", ")
 
@@ -50,6 +51,6 @@ class CityDeserializer : JsonDeserializer<City> {
             }
         }
 
-        return City("London", temperatures)
+        return temperatures
     }
 }
