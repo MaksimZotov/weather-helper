@@ -28,7 +28,7 @@ class CityDeserializer : JsonDeserializer<City> {
         return City(name, getTemperaturesFromJson(jsonData))
     }
 
-    private fun getTemperaturesFromJson(jsonData: String): Map<String, Temperature> {
+    fun getTemperaturesFromJson(jsonData: String): Map<String, Temperature> {
         val matches = mainRegex.findAll(jsonData)
         val parsedJsonData = matches.map { it.value }.joinToString().split(", ")
 
