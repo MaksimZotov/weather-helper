@@ -28,7 +28,7 @@ import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesA
 class CitiesFragment :
     TopLevelFragment<CitiesFragmentBinding>(CitiesFragmentBinding::inflate),
     SearchView.OnQueryTextListener,
-    OnItemClickListener {
+    CitiesAdapter.OnCityClickListener {
 
     private val viewModel by viewModels<CitiesViewModel>()
     private lateinit var citiesAdapter: CitiesAdapter
@@ -52,7 +52,7 @@ class CitiesFragment :
         
         val recyclerView = binding.indicatorsRecyclerView
         citiesAdapter = CitiesAdapter(
-            mutableListOf(City("Some name", Temperature(-14, 35))),
+            mutableListOf(City("Moscow", mapOf("Today" to Temperature(-14, 35)))),
             this
         )
         recyclerView.adapter = citiesAdapter
@@ -123,7 +123,7 @@ class CitiesFragment :
             .hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
     }
 
-    override fun onItemClick(position: Int) {
+    override fun onCityClick(name: String) {
         findNavController().navigate(R.id.cityFragment)
     }
 

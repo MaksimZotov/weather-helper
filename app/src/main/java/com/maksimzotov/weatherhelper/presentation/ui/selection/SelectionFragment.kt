@@ -4,31 +4,36 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.maksimzotov.weatherhelper.R
+import com.maksimzotov.weatherhelper.data.logic.loadcity.CityRepositoryImpl
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
 import com.maksimzotov.weatherhelper.domain.entities.cities.City
 import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
+import com.maksimzotov.weatherhelper.domain.usecases.loadcity.LoadCityUseCase
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
+import kotlinx.coroutines.Dispatchers
 import java.util.*
 
 class SelectionFragment :
     BaseFragment<SelectionFragmentBinding>(SelectionFragmentBinding::inflate),
     SearchView.OnQueryTextListener,
-    OnItemClickListener {
+    CitiesAdapter.OnCityClickListener {
 
-    private val viewModel by viewModels<SelectionViewModel>()
+    private lateinit var viewModel: SelectionViewModel
     private lateinit var citiesAdapter: CitiesAdapter
     private val citiesStub = setOf(
-        City("Moscow", Temperature(0, 5)),
-        City("Kiev", Temperature(5, 10)),
-        City("Minsk", Temperature(10, 15))
+        City("Moscow", mapOf("Today" to Temperature(0, 5))),
+        City("Kiev", mapOf("Today" to Temperature(5, 10))),
+        City("Minsk", mapOf("Today" to Temperature(10, 15)))
     )
+
+    private val loadCityUseCase = LoadCityUseCase(CityRepositoryImpl(), Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +49,23 @@ class SelectionFragment :
         recyclerView.addItemDecoration(
             DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         )
+
+        viewModel = ViewModelProvider(
+            this,
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return SelectionViewModel(loadCityUseCase) as T
+                }
+            }
+        ).get(SelectionViewModel::class.java)
+
+        viewModel.response.observe(viewLifecycleOwner, { response ->
+            if (response.isSuccessful) {
+                Toast.makeText(context, response.body().toString(), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context,response.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,8 +88,8 @@ class SelectionFragment :
         return onQueryTextSubmit(newText)
     }
 
-    override fun onItemClick(position: Int) {
-        // ...
-        findNavController().popBackStack()
+    override fun onCityClick(name: String) {
+        viewModel.getCity(name)
+        //findNavController().popBackStack()
     }
 }
