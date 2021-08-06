@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -13,28 +12,23 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.maksimzotov.weatherhelper.R
-import com.maksimzotov.weatherhelper.data.logic.loadcity.CityRepositoryImpl
 import com.maksimzotov.weatherhelper.databinding.CitiesFragmentBinding
 import com.maksimzotov.weatherhelper.domain.entities.cities.City
 import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
-import com.maksimzotov.weatherhelper.domain.usecases.loadcity.LoadCityUseCase
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
-import kotlinx.coroutines.Dispatchers
 
 
 class CitiesFragment :
     TopLevelFragment<CitiesFragmentBinding>(CitiesFragmentBinding::inflate),
     SearchView.OnQueryTextListener,
-    OnItemClickListener {
+    CitiesAdapter.OnCityClickListener {
 
     private val viewModel by viewModels<CitiesViewModel>()
     private lateinit var citiesAdapter: CitiesAdapter
@@ -58,7 +52,7 @@ class CitiesFragment :
         
         val recyclerView = binding.indicatorsRecyclerView
         citiesAdapter = CitiesAdapter(
-            mutableListOf(City("Some name", mapOf("Today" to Temperature(-14, 35)))),
+            mutableListOf(City("Moscow", mapOf("Today" to Temperature(-14, 35)))),
             this
         )
         recyclerView.adapter = citiesAdapter
@@ -120,8 +114,6 @@ class CitiesFragment :
             }
 
         }).attachToRecyclerView(recyclerView)
-
-        test()
     }
 
     override fun onPause() {
@@ -131,7 +123,7 @@ class CitiesFragment :
             .hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
     }
 
-    override fun onItemClick(position: Int) {
+    override fun onCityClick(name: String) {
         findNavController().navigate(R.id.cityFragment)
     }
 
@@ -151,25 +143,5 @@ class CitiesFragment :
     override fun onQueryTextChange(newText: String?): Boolean {
         Toast.makeText(requireContext(), "Change", Toast.LENGTH_SHORT).show()
         return true
-    }
-
-    private fun test() {
-        val loadCityUseCase = LoadCityUseCase(CityRepositoryImpl(), Dispatchers.IO)
-        val viewModel = ViewModelProvider(
-            this,
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return CitiesViewModel(loadCityUseCase) as T
-                }
-            }
-        ).get(CitiesViewModel::class.java)
-        viewModel.getCity("london")
-        viewModel.response.observe(viewLifecycleOwner, { response ->
-            if (response.isSuccessful)
-                Log.d("Response", response.body().toString())
-            else {
-                Log.d("Response", response.toString())
-            }
-        })
     }
 }
