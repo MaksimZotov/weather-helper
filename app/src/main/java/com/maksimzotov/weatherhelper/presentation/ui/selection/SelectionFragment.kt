@@ -1,24 +1,24 @@
 package com.maksimzotov.weatherhelper.presentation.ui.selection
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.maksimzotov.weatherhelper.R
-import com.maksimzotov.weatherhelper.data.logic.loadcity.CityRepositoryImpl
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
+import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.domain.entities.cities.City
 import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
 import com.maksimzotov.weatherhelper.domain.usecases.loadcity.LoadCityUseCase
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
-import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
-import kotlinx.coroutines.Dispatchers
 import java.util.*
+import javax.inject.Inject
 
 class SelectionFragment :
     BaseFragment<SelectionFragmentBinding>(SelectionFragmentBinding::inflate),
@@ -33,10 +33,12 @@ class SelectionFragment :
         City("Minsk", mapOf("Today" to Temperature(10, 15)))
     )
 
-    private val loadCityUseCase = LoadCityUseCase(CityRepositoryImpl(), Dispatchers.IO)
+    @Inject
+    lateinit var loadCityUseCase: LoadCityUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requireActivity().appComponent.injectSelectionFragment(this)
         setHasOptionsMenu(true)
     }
 
