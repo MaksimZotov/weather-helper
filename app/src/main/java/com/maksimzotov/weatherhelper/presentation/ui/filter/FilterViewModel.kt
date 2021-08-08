@@ -7,22 +7,34 @@ import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import com.maksimzotov.weatherhelper.domain.usecases.GetCurrentFilterUseCase
 import com.maksimzotov.weatherhelper.domain.usecases.SetCurrentFilterUseCase
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 class FilterViewModel(
     private val getCurrentFilterUseCase: GetCurrentFilterUseCase,
     private val setCurrentFilterUseCase: SetCurrentFilterUseCase
 ) : ViewModel() {
+    private val dateConverter = DateConverter()
+    private val dateFormat = dateConverter.dateFormat
+    private val defaultDate = dateFormat.format(Calendar.getInstance().time)
+
+    val firstDate: MutableLiveData<String> = MutableLiveData(defaultDate)
+    val lastDate: MutableLiveData<String> = MutableLiveData(defaultDate)
+    val rangeTemperature: MutableLiveData<Pair<Int, Int>> = MutableLiveData(15 to 35)
+
     val currentFilter: LiveData<Filter?> =
         getCurrentFilterUseCase.getCurrentFilter().asLiveData()
 
     fun setCurrentFilter() = viewModelScope.launch {
-        // TODO
+        val firstDate = firstDate.value?.let { dateConverter.fromStringToList(it) } ?: return@launch
+        val lastDate = lastDate.value?.let { dateConverter.fromStringToList(it) } ?: return@launch
+        val rangeTemperature = rangeTemperature.value ?: return@launch
+
         setCurrentFilterUseCase.setCurrentFilter(
             Filter(
-                Date(0, 0, 0),
-                Date(0, 0, 0),
-                Temperature(0, 0)
+                Date(firstDate[0], firstDate[1], firstDate[2]),
+                Date(lastDate[0], lastDate[1], lastDate[2]),
+                Temperature(rangeTemperature.first, rangeTemperature.second)
             )
         )
     }

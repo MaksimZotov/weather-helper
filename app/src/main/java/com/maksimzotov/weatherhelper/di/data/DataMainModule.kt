@@ -15,6 +15,7 @@ import javax.inject.Singleton
 class DataMainModule {
 
     @Provides
+    @Singleton
     fun provideRepository(
         mainDao: MainDao
     ): Repository {
