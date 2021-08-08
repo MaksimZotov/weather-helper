@@ -15,6 +15,5 @@ import com.maksimzotov.weatherhelper.presentation.entities.Temperature
     version = 1
 )
 abstract class AndroidSettingsDatabase : RoomDatabase() {
-
     abstract fun androidSettingsDao(): AndroidSettingsDao
 }

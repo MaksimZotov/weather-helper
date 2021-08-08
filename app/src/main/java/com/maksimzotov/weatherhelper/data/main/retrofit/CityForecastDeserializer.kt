@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.data.logic.loadcity
+package com.maksimzotov.weatherhelper.data.main.retrofit
 
 import com.google.gson.*
 import com.maksimzotov.weatherhelper.domain.entities.City
@@ -7,7 +7,7 @@ import java.lang.IllegalArgumentException
 import java.lang.reflect.Type
 import kotlin.math.roundToInt
 
-class CityDeserializer : JsonDeserializer<City> {
+class CityForecastDeserializer : JsonDeserializer<City> {
     private val fromKelvin = 273.15
     private val separatorIndex = 10
 

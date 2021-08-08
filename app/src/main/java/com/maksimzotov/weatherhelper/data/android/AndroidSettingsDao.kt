@@ -1,9 +1,12 @@
 package com.maksimzotov.weatherhelper.data.android
 
-import androidx.room.*
-import com.maksimzotov.weatherhelper.presentation.entities.AndroidSettings
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.maksimzotov.weatherhelper.presentation.entities.BottomNavigation
 import com.maksimzotov.weatherhelper.presentation.entities.DarkTheme
+import com.maksimzotov.weatherhelper.presentation.entities.AndroidSettingsTableNames
 import com.maksimzotov.weatherhelper.presentation.entities.Temperature
 import kotlinx.coroutines.flow.Flow
 
@@ -19,12 +22,12 @@ interface AndroidSettingsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun setTemperature(temperature: Temperature)
 
-    @Query("SELECT * FROM ${AndroidSettings.TABLE_NAME_BOTTOM_NAVIGATION}")
+    @Query("SELECT * FROM ${AndroidSettingsTableNames.BOTTOM_NAVIGATION}")
     fun getBottomNavigation(): Flow<BottomNavigation?>
 
-    @Query("SELECT * FROM ${AndroidSettings.TABLE_NAME_DARK_THEME}")
+    @Query("SELECT * FROM ${AndroidSettingsTableNames.DARK_THEME}")
     fun getDarkTheme(): Flow<DarkTheme?>
 
-    @Query("SELECT * FROM ${AndroidSettings.TABLE_NAME_TEMPERATURE}")
+    @Query("SELECT * FROM ${AndroidSettingsTableNames.TEMPERATURE}")
     fun getTemperature(): Flow<Temperature?>
 }

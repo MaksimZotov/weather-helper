@@ -1,23 +1,37 @@
 package com.maksimzotov.weatherhelper.presentation.ui.filter
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.maksimzotov.weatherhelper.R
-import com.maksimzotov.weatherhelper.databinding.CityFragmentBinding
 import com.maksimzotov.weatherhelper.databinding.FilterFragmentBinding
+import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
+import javax.inject.Inject
 
 class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding::inflate) {
+
+    @Inject
+    lateinit var viewModelFactory: FilterViewModel.Factory
+    private val viewModel by viewModels<FilterViewModel> {
+        viewModelFactory
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().appComponent.inject(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.saveFilter.setOnClickListener {
-            findNavController().popBackStack()
+            //findNavController().popBackStack()
+            viewModel.setCurrentFilter()
         }
+
+        viewModel.currentFilter.observe(viewLifecycleOwner, { filter ->
+            Toast.makeText(activity, filter.toString(), Toast.LENGTH_LONG).show()
+        })
     }
 }

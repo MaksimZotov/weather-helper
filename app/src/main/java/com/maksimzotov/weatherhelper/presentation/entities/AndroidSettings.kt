@@ -3,23 +3,17 @@ package com.maksimzotov.weatherhelper.presentation.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-object AndroidSettings {
-    const val TABLE_NAME_BOTTOM_NAVIGATION = "android_settings_bottom_navigation"
-    const val TABLE_NAME_DARK_THEME = "android_settings_dark_theme"
-    const val TABLE_NAME_TEMPERATURE = "android_settings_temperature"
-}
-
-@Entity(tableName = AndroidSettings.TABLE_NAME_BOTTOM_NAVIGATION)
+@Entity(tableName = AndroidSettingsTableNames.BOTTOM_NAVIGATION)
 data class BottomNavigation(val isAble: Boolean)  {
-    @PrimaryKey var id: Int = 0
+    @PrimaryKey var id = 0
 }
 
-@Entity(tableName = AndroidSettings.TABLE_NAME_DARK_THEME)
+@Entity(tableName = AndroidSettingsTableNames.DARK_THEME)
 data class DarkTheme(val isAble: Boolean)  {
-    @PrimaryKey var id: Int = 0
+    @PrimaryKey var id = 0
 }
 
-@Entity(tableName = AndroidSettings.TABLE_NAME_TEMPERATURE)
+@Entity(tableName = AndroidSettingsTableNames.TEMPERATURE)
 data class Temperature(val isAble: Boolean)  {
-    @PrimaryKey var id: Int = 0
+    @PrimaryKey var id = 0
 }

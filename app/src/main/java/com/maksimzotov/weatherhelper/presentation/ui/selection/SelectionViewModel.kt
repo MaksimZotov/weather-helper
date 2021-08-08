@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.maksimzotov.weatherhelper.domain.entities.City
-import com.maksimzotov.weatherhelper.domain.usecases.loadcity.LoadCityUseCase
+import com.maksimzotov.weatherhelper.domain.usecases.LoadCityUseCase
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
@@ -13,10 +13,8 @@ import javax.inject.Inject
 class SelectionViewModel(private val loadCityUseCase: LoadCityUseCase) : ViewModel() {
     val response = MutableLiveData<Response<City>>()
 
-    fun getCity(name: String) {
-        viewModelScope.launch {
-            response.value = loadCityUseCase.loadCity(name)
-        }
+    fun getCity(name: String) = viewModelScope.launch {
+        response.value = loadCityUseCase.loadCity(name)
     }
 
     class Factory @Inject constructor(

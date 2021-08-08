@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.data.logic.loadcity
+package com.maksimzotov.weatherhelper.data.main.retrofit
 
 import com.maksimzotov.weatherhelper.domain.entities.City
 import retrofit2.Response

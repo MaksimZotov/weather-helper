@@ -40,7 +40,7 @@ class SelectionFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        requireActivity().appComponent.injectSelectionFragment(this)
+        requireActivity().appComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

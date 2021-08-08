@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.data.logic.loadcity
+package com.maksimzotov.weatherhelper.data.main.retrofit
 
 import com.google.gson.GsonBuilder
 import com.maksimzotov.weatherhelper.domain.entities.City
@@ -22,7 +22,7 @@ object RetrofitInstance {
 
     private fun buildGsonConverter(): GsonConverterFactory {
         val gsonBuilder = GsonBuilder()
-        gsonBuilder.registerTypeAdapter(City::class.java, CityDeserializer())
+        gsonBuilder.registerTypeAdapter(City::class.java, CityForecastDeserializer())
         val myGson = gsonBuilder.create()
         return GsonConverterFactory.create(myGson)
     }
