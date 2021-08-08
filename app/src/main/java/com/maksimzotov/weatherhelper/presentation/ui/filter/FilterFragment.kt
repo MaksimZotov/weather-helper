@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.slider.RangeSlider
 import com.maksimzotov.weatherhelper.databinding.FilterFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
@@ -59,7 +60,8 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
             }
 
             rangeSliderTemperature
-            .addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
+                .addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
+
                 override fun onStartTrackingTouch(slider: RangeSlider) {
                     rangeSliderTextTemperature.text = "Temperature [?; ?]"
                 }
@@ -68,30 +70,55 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                         slider.values[0].toInt() to slider.values[1].toInt()
                 }
             })
-
             rangeSliderTemperature.setLabelFormatter { value ->
                 "+${value.toInt()}"
             }
+
+            saveFilter.setOnClickListener {
+                viewModel.setCurrentFilter()
+            }
         }
 
-        binding.saveFilter.setOnClickListener {
-            //findNavController().popBackStack()
-            viewModel.setCurrentFilter()
+        viewModel.apply {
+            popBackstack.observe(viewLifecycleOwner, { flag ->
+                if (flag) {
+                    viewModel.popBackstack.value = false
+                    findNavController().popBackStack()
+                }
+            })
+            currentFilter.observe(viewLifecycleOwner, { filter ->
+                Toast.makeText(activity, filter.toString(), Toast.LENGTH_LONG).show()
+            })
+            firstDate.observe(viewLifecycleOwner, { day -> binding.firstDay.text = day })
+            lastDate.observe(viewLifecycleOwner, { day -> binding.lastDay.text = day })
+            rangeTemperature.observe(viewLifecycleOwner, { range ->
+                binding.rangeSliderTextTemperature.text =
+                    "Temperature [+${range.first}; +${range.second}]"
+
+                binding.rangeSliderTemperature.setValues(
+                    range.first.toFloat(),
+                    range.second.toFloat()
+                )
+            })
+
+            filter.observe(viewLifecycleOwner, { filter ->
+                if (filter == null || !flagSetCurrentFilter) {
+                    return@observe
+                }
+                val minTemperature = filter.temperature.min
+                val maxTemperature = filter.temperature.max
+                firstDate.value = filter.startDate.toString()
+                lastDate.value = filter.endDate.toString()
+                rangeTemperature.value = minTemperature to maxTemperature
+                binding.apply {
+                    listOf(
+                        firstDay,
+                        lastDay,
+                        rangeSliderTextTemperature,
+                        rangeSliderTemperature
+                    ).forEach { it.visibility = View.VISIBLE }
+                }
+            })
         }
-
-        viewModel.currentFilter.observe(viewLifecycleOwner, { filter ->
-            Toast.makeText(activity, filter.toString(), Toast.LENGTH_LONG).show()
-        })
-
-        viewModel.firstDate.observe(viewLifecycleOwner, { day ->
-            binding.firstDay.text = day
-        })
-        viewModel.lastDate.observe(viewLifecycleOwner, { day ->
-            binding.lastDay.text = day
-        })
-        viewModel.rangeTemperature.observe(viewLifecycleOwner, { range ->
-            binding.rangeSliderTextTemperature.text =
-                "Temperature [+${range.first}; +${range.second}]"
-        })
     }
 }

@@ -18,12 +18,23 @@ class FilterViewModel(
     private val dateFormat = dateConverter.dateFormat
     private val defaultDate = dateFormat.format(Calendar.getInstance().time)
 
+    val filter: LiveData<Filter?> = getCurrentFilterUseCase.getCurrentFilter().asLiveData()
+
     val firstDate: MutableLiveData<String> = MutableLiveData(defaultDate)
     val lastDate: MutableLiveData<String> = MutableLiveData(defaultDate)
     val rangeTemperature: MutableLiveData<Pair<Int, Int>> = MutableLiveData(15 to 35)
 
+    val popBackstack = MutableLiveData(false)
+
     val currentFilter: LiveData<Filter?> =
         getCurrentFilterUseCase.getCurrentFilter().asLiveData()
+
+    private var _flagSetCurrentFilter = true
+    val flagSetCurrentFilter: Boolean get() {
+        val prev = _flagSetCurrentFilter
+        _flagSetCurrentFilter = false
+        return prev
+    }
 
     fun setCurrentFilter() = viewModelScope.launch {
         val firstDate = firstDate.value?.let { dateConverter.fromStringToList(it) } ?: return@launch
@@ -37,6 +48,8 @@ class FilterViewModel(
                 Temperature(rangeTemperature.first, rangeTemperature.second)
             )
         )
+
+        popBackstack.value = true
     }
 
     class Factory @Inject constructor(

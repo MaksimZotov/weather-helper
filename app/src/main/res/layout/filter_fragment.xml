@@ -36,7 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
-                    android:text="08.08.2021" />
+                    android:text="08.08.2021"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -60,7 +61,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
-                    android:text="08.08.2021" />
+                    android:text="08.08.2021"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -71,7 +73,8 @@
                 android:text="Temperature: [+15; +35]"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="48dp"
-                android:textSize="24dp" />
+                android:textSize="24dp"
+                android:visibility="gone"/>
 
             <com.google.android.material.slider.RangeSlider
                 android:id="@+id/range_slider_temperature"
@@ -81,7 +84,8 @@
                 android:valueFrom="0.0"
                 android:valueTo="50.0"
                 app:values="@array/initial_range_slider_values"
-                app:labelBehavior="withinBounds"/>
+                app:labelBehavior="withinBounds"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
