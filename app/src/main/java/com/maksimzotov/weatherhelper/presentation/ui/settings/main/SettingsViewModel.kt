@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.ui.settings
+package com.maksimzotov.weatherhelper.presentation.ui.settings.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

@@ -50,12 +50,12 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.SettingsFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.main.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/settings_fragment" />
     <fragment
         android:id="@+id/indicatorsSettingsFragment"
-        android:name="com.maksimzotov.weatherhelper.presentation.ui.city.settings.IndicatorsSettingsFragment"
-        android:label="IndicatorsFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.indicators.IndicatorsSettingsFragment"
+        android:label="Indicators"
         tools:layout="@layout/indicators_settings_fragment" />
 </navigation>

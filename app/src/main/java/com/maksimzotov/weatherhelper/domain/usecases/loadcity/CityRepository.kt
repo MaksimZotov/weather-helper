@@ -1,6 +1,6 @@
 package com.maksimzotov.weatherhelper.domain.usecases.loadcity
 
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
+import com.maksimzotov.weatherhelper.domain.entities.City
 import retrofit2.Response
 
 interface CityRepository {

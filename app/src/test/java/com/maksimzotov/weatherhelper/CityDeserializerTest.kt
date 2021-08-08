@@ -2,7 +2,7 @@ package com.maksimzotov.weatherhelper
 
 import com.google.gson.JsonElement
 import com.maksimzotov.weatherhelper.data.logic.loadcity.CityDeserializer
-import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
+import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import org.junit.Test
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows

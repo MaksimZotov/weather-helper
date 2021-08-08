@@ -1,7 +1,7 @@
 package com.maksimzotov.weatherhelper.data.logic.loadcity
 
 import com.google.gson.GsonBuilder
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
+import com.maksimzotov.weatherhelper.domain.entities.City
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

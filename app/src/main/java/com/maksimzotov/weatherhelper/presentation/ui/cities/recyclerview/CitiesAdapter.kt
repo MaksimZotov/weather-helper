@@ -4,9 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.maksimzotov.weatherhelper.databinding.CityItemBinding
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
-import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
-import java.lang.StringBuilder
+import com.maksimzotov.weatherhelper.domain.entities.City
 
 class CitiesAdapter (
     var cities: MutableList<City>,

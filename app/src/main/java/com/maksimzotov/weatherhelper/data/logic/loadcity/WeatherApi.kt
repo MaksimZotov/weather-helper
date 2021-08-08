@@ -1,6 +1,6 @@
 package com.maksimzotov.weatherhelper.data.logic.loadcity
 
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
+import com.maksimzotov.weatherhelper.domain.entities.City
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

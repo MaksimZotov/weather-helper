@@ -11,11 +11,9 @@ import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.CityFragmentBinding
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.ui.city.viewpager.ForecastAdapter
-import com.maksimzotov.weatherhelper.presentation.ui.city.indicators.IndicatorsFragment
+import com.maksimzotov.weatherhelper.presentation.ui.indicators.IndicatorsFragment
 
 class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::inflate) {
-
-    private val viewModel by viewModels<CityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +22,7 @@ class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.viewPager.adapter = ForecastAdapter(
             listOf(
                 IndicatorsFragment(),

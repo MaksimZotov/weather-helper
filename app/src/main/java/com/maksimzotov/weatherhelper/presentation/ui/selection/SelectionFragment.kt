@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
-import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
+import com.maksimzotov.weatherhelper.domain.entities.City
+import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
 import java.util.*
 import javax.inject.Inject
@@ -59,16 +60,20 @@ class SelectionFragment :
 
         viewModel.response.observe(viewLifecycleOwner, { response ->
             if (response.isSuccessful) {
-                Toast.makeText(context, response.body().toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(context,response.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,response.toString(), Toast.LENGTH_LONG).show()
             }
         })
     }
 
+    override fun onPause() {
+        super.onPause()
+        requireActivity().closeKeyboard()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
-
         val menuItem = menu.findItem(R.id.menu_search)
         val searchView = menuItem.actionView as SearchView
         searchView.setOnQueryTextListener(this)
@@ -88,6 +93,5 @@ class SelectionFragment :
 
     override fun onCityClick(name: String) {
         viewModel.getCity(name)
-        //findNavController().popBackStack()
     }
 }

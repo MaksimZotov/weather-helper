@@ -1,8 +1,9 @@
-package com.maksimzotov.weatherhelper.presentation.ui.settings
+package com.maksimzotov.weatherhelper.presentation.ui.settings.main
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.maksimzotov.weatherhelper.databinding.SettingsFragmentBinding
 import com.maksimzotov.weatherhelper.presentation.main.activity.SettingsSharedViewModel
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
@@ -10,11 +11,11 @@ import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 class SettingsFragment
     : TopLevelFragment<SettingsFragmentBinding>(SettingsFragmentBinding::inflate) {
 
+    private val viewModel by viewModels<SettingsViewModel>()
+    private val settingsSharedViewModel by activityViewModels<SettingsSharedViewModel>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
 
         binding.apply {
             switchDarkTheme.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -31,13 +32,7 @@ class SettingsFragment
                     viewModel.hideBottomNavigation()
                 }
             }
-        }
 
-        val settingsSharedViewModel =
-            ViewModelProvider(requireActivity())
-                .get(SettingsSharedViewModel::class.java)
-
-        binding.apply {
             val bottomNavigation = settingsSharedViewModel.bottomNavigation.value
             if (bottomNavigation != null && !bottomNavigation.isAble) {
                 radioGroupBottomNav.check(bottomNavOff.id)

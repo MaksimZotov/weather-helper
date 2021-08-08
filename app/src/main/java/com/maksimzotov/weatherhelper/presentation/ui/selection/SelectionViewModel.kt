@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
+import com.maksimzotov.weatherhelper.domain.entities.City
 import com.maksimzotov.weatherhelper.domain.usecases.loadcity.LoadCityUseCase
 import kotlinx.coroutines.launch
 import retrofit2.Response

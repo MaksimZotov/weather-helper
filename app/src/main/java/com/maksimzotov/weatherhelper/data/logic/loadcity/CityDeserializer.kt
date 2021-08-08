@@ -1,8 +1,8 @@
 package com.maksimzotov.weatherhelper.data.logic.loadcity
 
 import com.google.gson.*
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
-import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
+import com.maksimzotov.weatherhelper.domain.entities.City
+import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import java.lang.IllegalArgumentException
 import java.lang.reflect.Type
 import kotlin.math.roundToInt

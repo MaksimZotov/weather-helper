@@ -1,6 +1,6 @@
 package com.maksimzotov.weatherhelper.domain.usecases.loadcity
 
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
+import com.maksimzotov.weatherhelper.domain.entities.City
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.Response

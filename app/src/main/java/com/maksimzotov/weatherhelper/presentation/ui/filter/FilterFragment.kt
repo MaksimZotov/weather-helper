@@ -14,12 +14,9 @@ import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 
 class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding::inflate) {
 
-    private val viewModel by viewModels<FilterViewModel>()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.saveFilter.setOnClickListener {
-            // ...
             findNavController().popBackStack()
         }
     }

@@ -1,12 +1,8 @@
 package com.maksimzotov.weatherhelper.di.main
 
 import android.content.Context
-import androidx.fragment.app.Fragment
 import com.maksimzotov.weatherhelper.data.android.AndroidSettingsRepository
-import com.maksimzotov.weatherhelper.domain.usecases.loadcity.LoadCityUseCase
-import com.maksimzotov.weatherhelper.presentation.main.activity.MainActivity
 import com.maksimzotov.weatherhelper.presentation.ui.selection.SelectionFragment
-import com.maksimzotov.weatherhelper.presentation.ui.selection.SelectionViewModel
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
