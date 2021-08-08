@@ -1,31 +1,35 @@
 package com.maksimzotov.weatherhelper.presentation.ui.selection
 
+import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.maksimzotov.weatherhelper.R
-import com.maksimzotov.weatherhelper.data.logic.loadcity.CityRepositoryImpl
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
+import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.domain.entities.cities.City
 import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
-import com.maksimzotov.weatherhelper.domain.usecases.loadcity.LoadCityUseCase
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
-import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
-import kotlinx.coroutines.Dispatchers
 import java.util.*
+import javax.inject.Inject
 
 class SelectionFragment :
     BaseFragment<SelectionFragmentBinding>(SelectionFragmentBinding::inflate),
     SearchView.OnQueryTextListener,
     CitiesAdapter.OnCityClickListener {
 
-    private lateinit var viewModel: SelectionViewModel
+    @Inject
+    lateinit var viewModelFactory: SelectionViewModel.Factory
+    private val viewModel by viewModels<SelectionViewModel> {
+        viewModelFactory
+    }
+
     private lateinit var citiesAdapter: CitiesAdapter
     private val citiesStub = setOf(
         City("Moscow", mapOf("Today" to Temperature(0, 5))),
@@ -33,7 +37,10 @@ class SelectionFragment :
         City("Minsk", mapOf("Today" to Temperature(10, 15)))
     )
 
-    private val loadCityUseCase = LoadCityUseCase(CityRepositoryImpl(), Dispatchers.IO)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().appComponent.injectSelectionFragment(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,15 +56,6 @@ class SelectionFragment :
         recyclerView.addItemDecoration(
             DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         )
-
-        viewModel = ViewModelProvider(
-            this,
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return SelectionViewModel(loadCityUseCase) as T
-                }
-            }
-        ).get(SelectionViewModel::class.java)
 
         viewModel.response.observe(viewLifecycleOwner, { response ->
             if (response.isSuccessful) {
