@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
@@ -39,8 +40,8 @@ class SelectionFragment :
     )
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
         requireActivity().appComponent.inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,13 +59,22 @@ class SelectionFragment :
             DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         )
 
-        viewModel.response.observe(viewLifecycleOwner, { response ->
-            if (response.isSuccessful) {
-                Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(context,response.toString(), Toast.LENGTH_LONG).show()
-            }
-        })
+        viewModel.apply {
+            popBackstack.observe(viewLifecycleOwner, { flag ->
+                if (flag) {
+                    viewModel.popBackstack.value = false
+                    findNavController().popBackStack()
+                }
+            })
+
+            loadedCity.observe(viewLifecycleOwner, { response ->
+                if (response.isSuccessful) {
+                    Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context,response.toString(), Toast.LENGTH_LONG).show()
+                }
+            })
+        }
     }
 
     override fun onPause() {
@@ -92,6 +102,6 @@ class SelectionFragment :
     }
 
     override fun onCityClick(name: String) {
-        viewModel.getCity(name)
+        viewModel.addCity(name)
     }
 }

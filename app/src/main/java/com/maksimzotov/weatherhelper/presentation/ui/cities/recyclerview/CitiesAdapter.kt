@@ -7,7 +7,7 @@ import com.maksimzotov.weatherhelper.databinding.CityItemBinding
 import com.maksimzotov.weatherhelper.domain.entities.City
 
 class CitiesAdapter (
-    var cities: MutableList<City>,
+    var cities: List<City>,
     private val onCityClickListener: OnCityClickListener
 ) : RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
 
@@ -15,7 +15,7 @@ class CitiesAdapter (
         fun onCityClick(name: String)
     }
 
-    fun setData(cities: MutableList<City>) {
+    fun setData(cities: List<City>) {
         this.cities = cities
         notifyDataSetChanged()
     }
@@ -32,7 +32,7 @@ class CitiesAdapter (
         }
 
         fun bind(city: City) {
-            binding.cityName.setText(city.name)
+            binding.cityName.text = city.name
         }
     }
 

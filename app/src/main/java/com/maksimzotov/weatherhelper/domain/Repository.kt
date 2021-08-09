@@ -10,4 +10,9 @@ interface Repository {
     fun setCurrentFilter(filter: Filter)
 
     suspend fun loadCity(name: String): Response<City>
+
+    fun getCities(): Flow<List<City>?>
+    fun addCity(city: City)
+    fun removeCity(city: City)
+    fun updateCity(city: City)
 }

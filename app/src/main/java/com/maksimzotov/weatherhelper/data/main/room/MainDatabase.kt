@@ -2,11 +2,13 @@ package com.maksimzotov.weatherhelper.data.main.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.maksimzotov.weatherhelper.domain.entities.City
 import com.maksimzotov.weatherhelper.domain.entities.Filter
 
 @Database(
     entities = [
-        Filter::class
+        Filter::class,
+        City::class
     ],
     version = 1
 )

@@ -9,9 +9,7 @@ import com.maksimzotov.weatherhelper.data.main.room.domain.MainTableNames
 @Entity(tableName = MainTableNames.CITIES)
 @TypeConverters(CityConverter::class)
 data class City(
-    val name: String,
+    @PrimaryKey var name: String,
     val temperatures: Map<String, Temperature>
-) {
-    @PrimaryKey(autoGenerate = true) var id = 0
-}
+)
 

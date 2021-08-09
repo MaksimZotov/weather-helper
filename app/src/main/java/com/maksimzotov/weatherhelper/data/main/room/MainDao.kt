@@ -16,7 +16,7 @@ interface MainDao {
     fun getCurrentFilter(): Flow<Filter?>
 
 
-    @Query("SELECT * FROM ${MainTableNames.CITIES} ORDER BY id ASC")
+    @Query("SELECT * FROM ${MainTableNames.CITIES} ORDER BY name ASC")
     fun getCities(): Flow<List<City>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

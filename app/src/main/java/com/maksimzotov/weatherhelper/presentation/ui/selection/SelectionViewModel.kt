@@ -1,27 +1,42 @@
 package com.maksimzotov.weatherhelper.presentation.ui.selection
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.maksimzotov.weatherhelper.domain.entities.City
+import com.maksimzotov.weatherhelper.domain.usecases.AddCityUseCase
+import com.maksimzotov.weatherhelper.domain.usecases.GetCitiesUseCase
 import com.maksimzotov.weatherhelper.domain.usecases.LoadCityUseCase
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
-class SelectionViewModel(private val loadCityUseCase: LoadCityUseCase) : ViewModel() {
-    val response = MutableLiveData<Response<City>>()
+class SelectionViewModel(
+    private val loadCityUseCase: LoadCityUseCase,
+    private val addCityUseCase: AddCityUseCase,
+    private val getCitiesUseCase: GetCitiesUseCase
+) : ViewModel() {
+    val loadedCity = MutableLiveData<Response<City>>()
+    val cities = getCitiesUseCase.getCities().asLiveData()
 
-    fun getCity(name: String) = viewModelScope.launch {
-        response.value = loadCityUseCase.loadCity(name)
+    val popBackstack = MutableLiveData(false)
+
+    fun addCity(name: String) = viewModelScope.launch {
+        loadedCity.value = loadCityUseCase.loadCity(name)
+        val city = loadedCity.value?.body() ?: return@launch
+        addCityUseCase.addCity(city)
+        popBackstack.value = true
     }
 
     class Factory @Inject constructor(
-        private val loadCityUseCase: LoadCityUseCase
+        private val loadCityUseCase: LoadCityUseCase,
+        private val addCityUseCase: AddCityUseCase,
+        private val getCitiesUseCase: GetCitiesUseCase
     ): ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return SelectionViewModel(loadCityUseCase) as T
+            return SelectionViewModel(
+                loadCityUseCase,
+                addCityUseCase,
+                getCitiesUseCase
+            ) as T
         }
     }
 }

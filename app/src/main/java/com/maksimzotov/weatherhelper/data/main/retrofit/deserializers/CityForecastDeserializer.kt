@@ -24,7 +24,8 @@ class CityForecastDeserializer : JsonDeserializer<City> {
     ): City {
         val jsonTemp = json ?: throw IllegalArgumentException("json must not be null")
         val jsonData = jsonTemp.toString()
-        val name = jsonTemp.asJsonObject.get("city").asJsonObject.get("name").toString()
+        val name =
+            jsonTemp.asJsonObject.get("city").asJsonObject.get("name").toString().trim('\"')
         return City(name, getTemperaturesFromJson(jsonData))
     }
 
