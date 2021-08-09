@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.data.main.retrofit
+package com.maksimzotov.weatherhelper.data.main.retrofit.deserializers
 
 import com.google.gson.*
 import com.maksimzotov.weatherhelper.domain.entities.City

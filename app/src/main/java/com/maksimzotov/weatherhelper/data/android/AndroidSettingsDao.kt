@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.maksimzotov.weatherhelper.presentation.entities.settings.BottomNavigation
 import com.maksimzotov.weatherhelper.presentation.entities.settings.DarkTheme
-import com.maksimzotov.weatherhelper.presentation.entities.settings.AndroidSettingsTableNames
+import com.maksimzotov.weatherhelper.data.android.presentation.AndroidSettingsTableNames
 import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
 import kotlinx.coroutines.flow.Flow
 

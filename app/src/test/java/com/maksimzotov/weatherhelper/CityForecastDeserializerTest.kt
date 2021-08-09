@@ -1,7 +1,7 @@
 package com.maksimzotov.weatherhelper
 
 import com.google.gson.JsonElement
-import com.maksimzotov.weatherhelper.data.main.retrofit.CityForecastDeserializer
+import com.maksimzotov.weatherhelper.data.main.retrofit.deserializers.CityForecastDeserializer
 import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import org.junit.Test
 import org.junit.Assert.assertEquals
