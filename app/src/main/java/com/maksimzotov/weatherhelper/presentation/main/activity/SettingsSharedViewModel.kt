@@ -4,12 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.maksimzotov.weatherhelper.data.android.AndroidSettingsDatabase
-import com.maksimzotov.weatherhelper.data.android.AndroidSettingsRepository
 import com.maksimzotov.weatherhelper.di.main.appComponent
-import com.maksimzotov.weatherhelper.presentation.entities.BottomNavigation
-import com.maksimzotov.weatherhelper.presentation.entities.DarkTheme
-import com.maksimzotov.weatherhelper.presentation.entities.Temperature
+import com.maksimzotov.weatherhelper.presentation.entities.settings.BottomNavigation
+import com.maksimzotov.weatherhelper.presentation.entities.settings.DarkTheme
+import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
 
 class SettingsSharedViewModel(application: Application): AndroidViewModel(application)  {
     private val settingsRepo = application.appComponent.androidSettingsRepository

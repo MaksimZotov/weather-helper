@@ -5,9 +5,9 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.slider.RangeSlider
 import com.maksimzotov.weatherhelper.databinding.FilterFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
@@ -18,9 +18,10 @@ import javax.inject.Inject
 class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding::inflate) {
 
     @Inject
-    lateinit var viewModelFactory: FilterViewModel.Factory
+    lateinit var factory: FilterViewModel.Factory.FactoryForVMFactory
+    private val args by navArgs<FilterFragmentArgs>()
     private val viewModel by viewModels<FilterViewModel> {
-        viewModelFactory
+        factory.create(args.preference)
     }
 
     private val dateConverter: DateConverter = DateConverter()
@@ -38,8 +39,8 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
 
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
         requireActivity().appComponent.inject(this)
+        super.onAttach(context)
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -85,9 +86,6 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                     viewModel.popBackstack.value = false
                     findNavController().popBackStack()
                 }
-            })
-            currentFilter.observe(viewLifecycleOwner, { filter ->
-                Toast.makeText(activity, filter.toString(), Toast.LENGTH_LONG).show()
             })
             firstDate.observe(viewLifecycleOwner, { day -> binding.firstDay.text = day })
             lastDate.observe(viewLifecycleOwner, { day -> binding.lastDay.text = day })

@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.maksimzotov.weatherhelper.di.main.appComponent
-import com.maksimzotov.weatherhelper.presentation.entities.Temperature
+import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

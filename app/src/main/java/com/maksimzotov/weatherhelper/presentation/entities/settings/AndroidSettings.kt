@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.entities
+package com.maksimzotov.weatherhelper.presentation.entities.settings
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

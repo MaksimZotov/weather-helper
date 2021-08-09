@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.entities
+package com.maksimzotov.weatherhelper.presentation.entities.settings
 
 object AndroidSettingsTableNames {
     const val BOTTOM_NAVIGATION = "android_settings_bottom_navigation"

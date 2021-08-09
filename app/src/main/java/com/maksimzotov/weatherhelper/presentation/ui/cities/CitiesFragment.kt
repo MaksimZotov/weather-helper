@@ -17,6 +17,7 @@ import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.CitiesFragmentBinding
 import com.maksimzotov.weatherhelper.domain.entities.City
 import com.maksimzotov.weatherhelper.domain.entities.Temperature
+import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
@@ -70,11 +71,21 @@ class CitiesFragment :
     }
 
     private fun configureBinding() {
-        binding.addCity.setOnClickListener {
-            findNavController().navigate(R.id.selectionFragment)
-        }
-        binding.filterBottomSheet.editFilter.setOnClickListener {
-            findNavController().navigate(R.id.filterFragment)
+        binding.apply {
+            addCity.setOnClickListener {
+                findNavController().navigate(R.id.settingsFragment)
+            }
+            filterBottomSheet.editFilter.setOnClickListener {
+                val action =
+                    CitiesFragmentDirections.actionCitiesFragmentToFilterFragment(
+                        when (filterBottomSheet.filterPreference.selectedItemPosition) {
+                            0 -> Preferences.CURRENT_FILTER
+                            1 -> Preferences.TEMPERATE_CLIMATE
+                            else -> Preferences.DRY_CLIMATE
+                        }
+                    )
+                findNavController().navigate(action)
+            }
         }
     }
 
