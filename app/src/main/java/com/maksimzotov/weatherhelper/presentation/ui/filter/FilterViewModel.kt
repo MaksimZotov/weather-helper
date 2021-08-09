@@ -36,26 +36,27 @@ class FilterViewModel(
         return prev
     }
 
-    fun setCurrentFilter() = viewModelScope.launch {
-        val firstDate = firstDate.value?.let { dateConverter.fromStringToList(it) } ?: return@launch
-        val lastDate = lastDate.value?.let { dateConverter.fromStringToList(it) } ?: return@launch
-        val rangeTemperature = rangeTemperature.value ?: return@launch
+    fun setCurrentFilter() {
+        val firstDate = firstDate.value?.let { dateConverter.fromStringToList(it) } ?: return
+        val lastDate = lastDate.value?.let { dateConverter.fromStringToList(it) } ?: return
+        val rangeTemperature = rangeTemperature.value ?: return
 
-        setCurrentFilterUseCase.setCurrentFilter(
-            Filter(
-                Date(firstDate[0], firstDate[1], firstDate[2]),
-                Date(lastDate[0], lastDate[1], lastDate[2]),
-                Temperature(rangeTemperature.first, rangeTemperature.second)
+        viewModelScope.launch {
+            setCurrentFilterUseCase.setCurrentFilter(
+                Filter(
+                    Date(firstDate[0], firstDate[1], firstDate[2]),
+                    Date(lastDate[0], lastDate[1], lastDate[2]),
+                    Temperature(rangeTemperature.first, rangeTemperature.second)
+                )
             )
-        )
-
-        popBackstack.value = true
+            popBackstack.value = true
+        }
     }
 
     class Factory @Inject constructor(
         private val getCurrentFilterUseCase: GetCurrentFilterUseCase,
         private val setCurrentFilterUseCase: SetCurrentFilterUseCase
-    ): ViewModelProvider.Factory {
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return FilterViewModel(
                 getCurrentFilterUseCase,
