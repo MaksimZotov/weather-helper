@@ -75,6 +75,21 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 "+${value.toInt()}"
             }
 
+            rangeSliderHumidity
+                .addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
+
+                    override fun onStartTrackingTouch(slider: RangeSlider) {
+                        rangeSliderTextHumidity.text = "Humidity [?; ?]"
+                    }
+                    override fun onStopTrackingTouch(slider: RangeSlider) {
+                        viewModel.rangeHumidity.value =
+                            slider.values[0].toInt() to slider.values[1].toInt()
+                    }
+                })
+            rangeSliderHumidity.setLabelFormatter { value ->
+                "${value.toInt()}%"
+            }
+
             saveFilter.setOnClickListener {
                 viewModel.setCurrentFilter()
             }
@@ -98,6 +113,15 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                     range.second.toFloat()
                 )
             })
+            rangeHumidity.observe(viewLifecycleOwner, { range ->
+                binding.rangeSliderTextHumidity.text =
+                    "Humidity [${range.first}%; ${range.second}%]"
+
+                binding.rangeSliderHumidity.setValues(
+                    range.first.toFloat(),
+                    range.second.toFloat()
+                )
+            })
 
             filter.observe(viewLifecycleOwner, { filter ->
                 if (filter == null || !flagSetCurrentFilter) {
@@ -105,9 +129,12 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 }
                 val minTemperature = filter.temperature.min
                 val maxTemperature = filter.temperature.max
+                val minHumidity = filter.humidity.min
+                val maxHumidity = filter.humidity.max
                 firstDate.value = filter.startDate.toString()
                 lastDate.value = filter.endDate.toString()
                 rangeTemperature.value = minTemperature to maxTemperature
+                rangeHumidity.value = minHumidity to maxHumidity
                 binding.apply {
                     listOf(
                         firstDay,

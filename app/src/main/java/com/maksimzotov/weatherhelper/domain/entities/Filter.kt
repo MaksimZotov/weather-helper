@@ -10,7 +10,8 @@ import com.maksimzotov.weatherhelper.data.main.room.domain.MainTableNames
 data class Filter(
     @Embedded(prefix = "startDate") var startDate: Date,
     @Embedded(prefix = "endDate") var endDate: Date,
-    @Embedded var temperature: Temperature
+    @Embedded(prefix = "temperature") var temperature: Temperature,
+    @Embedded(prefix = "humidity") var humidity: Humidity
 ) {
     @PrimaryKey var id = 0
 }

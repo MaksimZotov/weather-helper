@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.presentation.entities.settings.BottomNavigation
 import com.maksimzotov.weatherhelper.presentation.entities.settings.DarkTheme
+import com.maksimzotov.weatherhelper.presentation.entities.settings.Humidity
 import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
 
 class SettingsSharedViewModel(application: Application): AndroidViewModel(application)  {
@@ -16,4 +17,5 @@ class SettingsSharedViewModel(application: Application): AndroidViewModel(applic
     val darkTheme: LiveData<DarkTheme?> = settingsRepo.darkTheme.asLiveData()
 
     val temperature: LiveData<Temperature?> = settingsRepo.temperature.asLiveData()
+    val humidity: LiveData<Humidity?> = settingsRepo.humidity.asLiveData()
 }

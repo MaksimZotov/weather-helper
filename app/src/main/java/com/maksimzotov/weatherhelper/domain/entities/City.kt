@@ -13,7 +13,8 @@ import java.io.Serializable
 data class City(
     @PrimaryKey var name: String,
     val dates: List<Date>,
-    val temperatures: List<Temperature>
+    val temperatures: List<Temperature>,
+    val humidityList: List<Humidity>
 ) : Serializable {
     @Ignore var isMatchesFilter = false
 }

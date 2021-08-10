@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.maksimzotov.weatherhelper.presentation.entities.settings.BottomNavigation
 import com.maksimzotov.weatherhelper.presentation.entities.settings.DarkTheme
 import com.maksimzotov.weatherhelper.data.android.presentation.AndroidSettingsTableNames
+import com.maksimzotov.weatherhelper.presentation.entities.settings.Humidity
 import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
 import kotlinx.coroutines.flow.Flow
 
@@ -22,6 +23,10 @@ interface AndroidSettingsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun setTemperature(temperature: Temperature)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun setHumidity(humidity: Humidity)
+
+
     @Query("SELECT * FROM ${AndroidSettingsTableNames.BOTTOM_NAVIGATION}")
     fun getBottomNavigation(): Flow<BottomNavigation?>
 
@@ -30,4 +35,7 @@ interface AndroidSettingsDao {
 
     @Query("SELECT * FROM ${AndroidSettingsTableNames.TEMPERATURE}")
     fun getTemperature(): Flow<Temperature?>
+
+    @Query("SELECT * FROM ${AndroidSettingsTableNames.HUMIDITY}")
+    fun getHumidity(): Flow<Humidity?>
 }

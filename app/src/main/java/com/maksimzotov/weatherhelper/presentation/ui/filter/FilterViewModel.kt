@@ -1,10 +1,8 @@
 package com.maksimzotov.weatherhelper.presentation.ui.filter
 
 import androidx.lifecycle.*
+import com.maksimzotov.weatherhelper.domain.entities.*
 import com.maksimzotov.weatherhelper.domain.entities.Date
-import com.maksimzotov.weatherhelper.domain.entities.DefaultFilters
-import com.maksimzotov.weatherhelper.domain.entities.Filter
-import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import com.maksimzotov.weatherhelper.domain.usecases.GetCurrentFilterUseCase
 import com.maksimzotov.weatherhelper.domain.usecases.SetCurrentFilterUseCase
 import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
@@ -25,10 +23,12 @@ class FilterViewModel(
     private val defaultDateStr = dateFormat.format(Calendar.getInstance().time)
     private val defaultDate = createDate(defaultDateStr)
     private val defaultRangeTemperature = 15 to 35
+    private val defaultRangeHumidity = 25 to 75
 
     val firstDate = MutableLiveData(defaultDateStr)
     val lastDate = MutableLiveData(defaultDateStr)
     val rangeTemperature = MutableLiveData(defaultRangeTemperature)
+    val rangeHumidity = MutableLiveData(defaultRangeHumidity)
 
     val filter: LiveData<Filter?> = when (preference) {
         Preferences.CURRENT_FILTER -> getCurrentFilterUseCase.getCurrentFilter().asLiveData()
@@ -53,13 +53,15 @@ class FilterViewModel(
         val firstDate = firstDate.value ?: return
         val lastDate = lastDate.value ?: return
         val rangeTemperature = rangeTemperature.value ?: return
+        val rangeHumidity = rangeHumidity.value ?: return
 
         viewModelScope.launch {
             setCurrentFilterUseCase.setCurrentFilter(
                 Filter(
-                    createDate(firstDate),
-                    createDate(lastDate),
-                    Temperature(rangeTemperature.first, rangeTemperature.second)
+                    startDate = createDate(firstDate),
+                    endDate = createDate(lastDate),
+                    temperature = Temperature(rangeTemperature.first, rangeTemperature.second),
+                    humidity = Humidity(rangeHumidity.first, rangeHumidity.second)
                 )
             )
             popBackstack.value = true

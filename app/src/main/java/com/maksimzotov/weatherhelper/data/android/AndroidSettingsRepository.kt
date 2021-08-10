@@ -1,5 +1,6 @@
 package com.maksimzotov.weatherhelper.data.android
 
+import com.maksimzotov.weatherhelper.presentation.entities.settings.Humidity
 import com.maksimzotov.weatherhelper.presentation.entities.settings.BottomNavigation
 import com.maksimzotov.weatherhelper.presentation.entities.settings.DarkTheme
 import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
@@ -16,6 +17,9 @@ class AndroidSettingsRepository(private val androidSettingsDao: AndroidSettingsD
     val temperature: Flow<Temperature?> =
         androidSettingsDao.getTemperature()
 
+    val humidity: Flow<Humidity?> =
+        androidSettingsDao.getHumidity()
+
 
     fun setBottomNavigation(bottomNavigation: BottomNavigation) =
         androidSettingsDao.setBottomNavigation(bottomNavigation)
@@ -25,4 +29,7 @@ class AndroidSettingsRepository(private val androidSettingsDao: AndroidSettingsD
 
     fun setTemperature(temperature: Temperature) =
         androidSettingsDao.setTemperature(temperature)
+
+    fun setHumidity(humidity: Humidity) =
+        androidSettingsDao.setHumidity(humidity)
 }

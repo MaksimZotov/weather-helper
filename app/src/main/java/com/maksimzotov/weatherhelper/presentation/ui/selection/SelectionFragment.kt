@@ -35,9 +35,9 @@ class SelectionFragment :
 
     private lateinit var citiesAdapter: CitiesAdapter
     private val citiesStub = setOf(
-        City("Moscow", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0))),
-        City("Kiev", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0))),
-        City("Minsk", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0)))
+        City("Moscow", listOf(), listOf(), listOf()),
+        City("Kiev", listOf(), listOf(), listOf()),
+        City("Minsk", listOf(), listOf(), listOf())
     )
 
     override fun onAttach(context: Context) {
