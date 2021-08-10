@@ -15,8 +15,8 @@ class CitiesViewModel(
     private val removeCityUseCase: RemoveCityUseCase,
     private val getCurrentFilterUseCase: GetCurrentFilterUseCase
 ) : ViewModel() {
-    val filter = getCurrentFilterUseCase.getCurrentFilter().asLiveData()
     val cities = getCitiesUseCase.getCities().asLiveData()
+    val filter = getCurrentFilterUseCase.getCurrentFilter().asLiveData()
 
     fun removeCity(position: Int) {
         val cityToRemove = cities.value?.get(position) ?: return
