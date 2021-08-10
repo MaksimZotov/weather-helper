@@ -142,8 +142,18 @@ class CitiesFragment :
                 val temperature = city.temperatures[i]
                 val temperatureMatches =
                     temperature.min >= filter.temperature.min &&
-                            temperature.max <= filter.temperature.max
-                isMatchesFilter = isMatchesFilter && temperatureMatches
+                    temperature.max <= filter.temperature.max
+
+                val humidity = city.humidityList[i]
+                val humidityMatches =
+                    humidity.min >= filter.humidity.min &&
+                    humidity.max <= filter.humidity.max
+
+                isMatchesFilter = isMatchesFilter && temperatureMatches && humidityMatches
+
+                if (!isMatchesFilter) {
+                    break
+                }
             }
             city.isMatchesFilter = isMatchesFilter
         }
