@@ -25,6 +25,7 @@ import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
 import com.maksimzotov.weatherhelper.presentation.ui.selection.SelectionViewModel
+import java.text.ParsePosition
 import javax.inject.Inject
 
 
@@ -65,8 +66,10 @@ class CitiesFragment :
         requireActivity().closeKeyboard()
     }
 
-    override fun onCityClick(name: String) {
-        findNavController().navigate(R.id.cityFragment)
+    override fun onCityClick(position: Int) {
+        val city = citiesAdapter.cities[position]
+        val action = CitiesFragmentDirections.actionCitiesFragmentToCityFragment(city)
+        findNavController().navigate(action)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -107,23 +110,27 @@ class CitiesFragment :
     }
 
     private fun configureViewModel() {
-        viewModel.cities.observe(viewLifecycleOwner, { cities ->
-            if (cities != null) {
-                citiesAdapter.setData(cities)
-            }
-        })
+        viewModel.apply {
+            cities.observe(viewLifecycleOwner, { cities ->
+                if (cities != null) {
+                    citiesAdapter.setData(cities)
+                }
+            })
+            filter.observe(viewLifecycleOwner, { filter ->
+                if (filter != null) {
+                    val cities = citiesAdapter.cities.map { city ->
+                        //val dates = city.temperatures.ke
+                    }
+                }
+            })
+        }
     }
 
     private fun configureRecyclerView() {
-        citiesAdapter = CitiesAdapter(
-            listOf(City("Moscow", mapOf("Today" to Temperature(-14, 35)))),
-            this
-        )
+        citiesAdapter = CitiesAdapter(listOf(), this)
 
         val recyclerView = binding.indicatorsRecyclerView
-
         recyclerView.adapter = citiesAdapter
-
         recyclerView.addItemDecoration(
             DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         )

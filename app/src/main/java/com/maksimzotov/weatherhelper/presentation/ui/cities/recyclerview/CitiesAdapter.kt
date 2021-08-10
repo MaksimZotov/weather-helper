@@ -12,7 +12,7 @@ class CitiesAdapter (
 ) : RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
 
     interface OnCityClickListener {
-        fun onCityClick(name: String)
+        fun onCityClick(position: Int)
     }
 
     fun setData(cities: List<City>) {
@@ -27,7 +27,7 @@ class CitiesAdapter (
 
         init {
             binding.root.setOnClickListener {
-                onCityClickListener.onCityClick(binding.cityName.text.toString())
+                onCityClickListener.onCityClick(adapterPosition)
             }
         }
 

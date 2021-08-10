@@ -14,6 +14,7 @@ import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.domain.entities.City
+import com.maksimzotov.weatherhelper.domain.entities.Date
 import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
@@ -34,9 +35,9 @@ class SelectionFragment :
 
     private lateinit var citiesAdapter: CitiesAdapter
     private val citiesStub = setOf(
-        City("Moscow", mapOf("Today" to Temperature(0, 5))),
-        City("Kiev", mapOf("Today" to Temperature(5, 10))),
-        City("Minsk", mapOf("Today" to Temperature(10, 15)))
+        City("Moscow", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0))),
+        City("Kiev", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0))),
+        City("Minsk", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0)))
     )
 
     override fun onAttach(context: Context) {
@@ -101,7 +102,7 @@ class SelectionFragment :
         return onQueryTextSubmit(newText)
     }
 
-    override fun onCityClick(name: String) {
-        viewModel.addCity(name)
+    override fun onCityClick(position: Int) {
+        viewModel.addCity(citiesAdapter.cities[position].name)
     }
 }

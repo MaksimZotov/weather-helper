@@ -2,6 +2,7 @@ package com.maksimzotov.weatherhelper.data.main.retrofit.deserializers
 
 import com.google.gson.*
 import com.maksimzotov.weatherhelper.domain.entities.City
+import com.maksimzotov.weatherhelper.domain.entities.Date
 import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import java.lang.IllegalArgumentException
 import java.lang.reflect.Type
@@ -26,7 +27,13 @@ class CityForecastDeserializer : JsonDeserializer<City> {
         val jsonData = jsonTemp.toString()
         val name =
             jsonTemp.asJsonObject.get("city").asJsonObject.get("name").toString().trim('\"')
-        return City(name, getTemperaturesFromJson(jsonData))
+        val datesToTemperatures = getTemperaturesFromJson(jsonData)
+        val dates = datesToTemperatures.keys.map { dateString ->
+            val dateList = dateString.split('-')
+            Date(dateList[2].toInt(), dateList[1].toInt(), dateList[0].toInt())
+        }
+        val temperatures = datesToTemperatures.values.toList()
+        return City(name, dates, temperatures)
     }
 
     fun getTemperaturesFromJson(jsonData: String): Map<String, Temperature> {

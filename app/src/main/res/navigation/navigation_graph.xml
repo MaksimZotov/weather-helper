@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_cityFragment_to_indicatorsFragment"
             app:destination="@id/indicatorsSettingsFragment" />
+        <argument
+            android:name="city"
+            app:argType="com.maksimzotov.weatherhelper.domain.entities.City" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
