@@ -112,6 +112,10 @@ class CitiesFragment :
             cities.observe(viewLifecycleOwner, { cities ->
                 if (cities != null) {
                     val filter = filter.value ?: return@observe
+                    if (cities.isEmpty()) {
+                        citiesAdapter.setData(cities)
+                        return@observe
+                    }
                     markCities(cities, filter)
                 }
             })
