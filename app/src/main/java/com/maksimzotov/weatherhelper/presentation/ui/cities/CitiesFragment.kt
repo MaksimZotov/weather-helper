@@ -160,7 +160,6 @@ class CitiesFragment :
         )
 
         ItemTouchHelper(object : ItemTouchHelper.Callback() {
-            override fun isLongPressDragEnabled() = true
             override fun isItemViewSwipeEnabled() = true
 
             override fun getMovementFlags(
@@ -168,7 +167,7 @@ class CitiesFragment :
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
                 return makeMovementFlags(
-                    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                    0,
                     ItemTouchHelper.START or ItemTouchHelper.END
                 )
             }
@@ -179,19 +178,10 @@ class CitiesFragment :
                 target: RecyclerView.ViewHolder
             ): Boolean {
                 return false
-                //val from = viewHolder.adapterPosition
-                //val to = target.adapterPosition
-                //val habitFrom = citiesAdapter.cities.removeAt(from)
-                //citiesAdapter.cities.add(to, habitFrom)
-                //citiesAdapter.notifyItemMoved(from, to)
-                //return true
             }
-
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.removeCity(viewHolder.adapterPosition)
-                //citiesAdapter.cities.removeAt(viewHolder.adapterPosition)
-                //citiesAdapter.notifyItemRemoved(viewHolder.adapterPosition)
             }
 
             override fun onSelectedChanged(
