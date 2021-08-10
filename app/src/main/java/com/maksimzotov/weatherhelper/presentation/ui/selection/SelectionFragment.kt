@@ -13,32 +13,25 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
-import com.maksimzotov.weatherhelper.domain.entities.City
-import com.maksimzotov.weatherhelper.domain.entities.Date
-import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
-import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
+import com.maksimzotov.weatherhelper.presentation.ui.selection.recyclerview.NamesAdapter
 import java.util.*
 import javax.inject.Inject
 
 class SelectionFragment :
     BaseFragment<SelectionFragmentBinding>(SelectionFragmentBinding::inflate),
     SearchView.OnQueryTextListener,
-    CitiesAdapter.OnCityClickListener {
+    NamesAdapter.OnCityClickListener {
+
+    private val namesStorage = NamesStorage()
+    private val namesAdapter = NamesAdapter(namesStorage.names, this)
 
     @Inject
     lateinit var viewModelFactory: SelectionViewModel.Factory
     private val viewModel by viewModels<SelectionViewModel> {
         viewModelFactory
     }
-
-    private lateinit var citiesAdapter: CitiesAdapter
-    private val citiesStub = setOf(
-        City("Moscow", listOf(), listOf(), listOf()),
-        City("Kiev", listOf(), listOf(), listOf()),
-        City("Minsk", listOf(), listOf(), listOf())
-    )
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
@@ -53,9 +46,8 @@ class SelectionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        citiesAdapter = CitiesAdapter(citiesStub.toMutableList(), this)
         val recyclerView = binding.citiesRecyclerView
-        recyclerView.adapter = citiesAdapter
+        recyclerView.adapter = namesAdapter
         recyclerView.addItemDecoration(
             DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         )
@@ -92,8 +84,8 @@ class SelectionFragment :
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         val filter = query?.lowercase(Locale.getDefault()) ?: return true
-        citiesAdapter.setData(citiesStub.filter {
-            it.name.lowercase(Locale.getDefault()).startsWith(filter)
+        namesAdapter.setData(namesStorage.names.filter {
+            it.lowercase(Locale.getDefault()).startsWith(filter)
         }.toMutableList())
         return true
     }
@@ -103,6 +95,6 @@ class SelectionFragment :
     }
 
     override fun onCityClick(position: Int) {
-        viewModel.addCity(citiesAdapter.cities[position].name)
+        viewModel.addCity(namesAdapter.names[position])
     }
 }

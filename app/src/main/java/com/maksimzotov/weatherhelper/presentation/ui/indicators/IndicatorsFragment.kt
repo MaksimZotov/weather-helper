@@ -19,26 +19,28 @@ class IndicatorsFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.indicatorTemperatureMin.text = temperature.min.toString()
-        binding.indicatorTemperatureMax.text = temperature.max.toString()
+        binding.apply {
+            indicatorTemperatureMin.text = temperature.min.toString()
+            indicatorTemperatureMax.text = temperature.max.toString()
 
-        binding.indicatorHumidityMin.text = humidity.min.toString()
-        binding.indicatorHumidityMax.text = humidity.max.toString()
+            indicatorHumidityMin.text = humidity.min.toString()
+            indicatorHumidityMax.text = humidity.max.toString()
 
-        settingsSharedViewModel.temperature.observe(viewLifecycleOwner, { temperature ->
-            if (temperature == null || temperature.isAble) {
-                binding.indicatorTemperature.visibility = View.VISIBLE
-            } else {
-                binding.indicatorTemperature.visibility = View.GONE
-            }
-        })
+            settingsSharedViewModel.temperature.observe(viewLifecycleOwner, { temperature ->
+                setVisibility(indicatorTemperature, temperature == null || temperature.isAble)
+            })
 
-        settingsSharedViewModel.humidity.observe(viewLifecycleOwner, { humidity ->
-            if (humidity == null || humidity.isAble) {
-                binding.indicatorHumidity.visibility = View.VISIBLE
-            } else {
-                binding.indicatorHumidity.visibility = View.GONE
-            }
-        })
+            settingsSharedViewModel.humidity.observe(viewLifecycleOwner, { humidity ->
+                setVisibility(indicatorHumidity, humidity == null || humidity.isAble)
+            })
+        }
+    }
+
+    private fun setVisibility(view: View, visible: Boolean) {
+        if (visible) {
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
+        }
     }
 }

@@ -18,7 +18,7 @@ class IndicatorsSettingsFragment
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            switchTemperature.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchTemperature.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     viewModel.showTemperature()
                 } else {
@@ -26,7 +26,7 @@ class IndicatorsSettingsFragment
                 }
             }
 
-            switchHumidity.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchHumidity.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     viewModel.showHumidity()
                 } else {

@@ -116,47 +116,19 @@ class CitiesFragment :
                         citiesAdapter.setData(cities)
                         return@observe
                     }
-                    markCities(cities, filter)
+                    checkMatchingToFilter(cities, filter)
                 }
             })
             filter.observe(viewLifecycleOwner, { filter ->
                 if (filter != null) {
                     val cities = cities.value ?: return@observe
-                    markCities(cities, filter)
+                    checkMatchingToFilter(cities, filter)
                 }
             })
         }
     }
-    private fun markCities(cities: List<City>, filter: Filter) {
-        val firstCity = cities.firstOrNull() ?: return
-        val indices = firstCity.dates.mapIndexed() { index, date ->
-            if (date >= filter.startDate && date <= filter.endDate) {
-                return@mapIndexed index
-            } else {
-                return@mapIndexed -1
-            }
-        }.filter { it != -1 }
-        cities.forEach {  city ->
-            var isMatchesFilter = true
-            for (i in indices) {
-                val temperature = city.temperatures[i]
-                val temperatureMatches =
-                    temperature.min >= filter.temperature.min &&
-                    temperature.max <= filter.temperature.max
-
-                val humidity = city.humidityList[i]
-                val humidityMatches =
-                    humidity.min >= filter.humidity.min &&
-                    humidity.max <= filter.humidity.max
-
-                isMatchesFilter = isMatchesFilter && temperatureMatches && humidityMatches
-
-                if (!isMatchesFilter) {
-                    break
-                }
-            }
-            city.isMatchesFilter = isMatchesFilter
-        }
+    private fun checkMatchingToFilter(cities: List<City>, filter: Filter) {
+        cities.forEach { it.checkMatchingToFilter(filter) }
         citiesAdapter.setData(cities)
     }
 

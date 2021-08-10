@@ -104,6 +104,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
             })
             firstDate.observe(viewLifecycleOwner, { day -> binding.firstDay.text = day })
             lastDate.observe(viewLifecycleOwner, { day -> binding.lastDay.text = day })
+
             rangeTemperature.observe(viewLifecycleOwner, { range ->
                 binding.rangeSliderTextTemperature.text =
                     "Temperature [+${range.first}; +${range.second}]"
@@ -135,14 +136,6 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 lastDate.value = filter.endDate.toString()
                 rangeTemperature.value = minTemperature to maxTemperature
                 rangeHumidity.value = minHumidity to maxHumidity
-                binding.apply {
-                    listOf(
-                        firstDay,
-                        lastDay,
-                        rangeSliderTextTemperature,
-                        rangeSliderTemperature
-                    ).forEach { it.visibility = View.VISIBLE }
-                }
             })
         }
     }

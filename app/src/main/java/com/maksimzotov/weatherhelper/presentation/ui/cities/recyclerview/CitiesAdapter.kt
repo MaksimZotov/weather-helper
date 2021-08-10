@@ -35,7 +35,7 @@ class CitiesAdapter (
 
         fun bind(city: City) {
             binding.cityName.text = city.name
-            if (city.isMatchesFilter) {
+            if (city.isMatchesToFilter) {
                 binding.root.background = ColorDrawable(Color.GREEN)
             } else {
                 binding.root.background = ColorDrawable(Color.WHITE)
