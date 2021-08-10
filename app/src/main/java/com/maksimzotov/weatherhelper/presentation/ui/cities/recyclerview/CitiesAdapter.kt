@@ -1,5 +1,7 @@
 package com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +35,11 @@ class CitiesAdapter (
 
         fun bind(city: City) {
             binding.cityName.text = city.name
+            if (city.isMatchesFilter) {
+                binding.root.background = ColorDrawable(Color.GREEN)
+            } else {
+                binding.root.background = ColorDrawable(Color.WHITE)
+            }
         }
     }
 

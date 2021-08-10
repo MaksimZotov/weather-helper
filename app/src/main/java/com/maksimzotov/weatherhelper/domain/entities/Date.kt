@@ -10,7 +10,7 @@ data class Date(
     }
 
     operator fun compareTo(other: Date): Int {
-        listOf(year to other.day, month to other.month, day to other.day).forEach {
+        listOf(year to other.year, month to other.month, day to other.day).forEach {
             val comparison = it.first.compareTo(it.second)
             if (comparison != 0) return comparison
         }

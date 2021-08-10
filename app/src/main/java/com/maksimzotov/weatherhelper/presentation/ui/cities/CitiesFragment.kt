@@ -18,14 +18,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.CitiesFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
-import com.maksimzotov.weatherhelper.domain.entities.City
-import com.maksimzotov.weatherhelper.domain.entities.Temperature
+import com.maksimzotov.weatherhelper.domain.entities.Filter
 import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
-import com.maksimzotov.weatherhelper.presentation.ui.selection.SelectionViewModel
-import java.text.ParsePosition
 import javax.inject.Inject
 
 
@@ -42,6 +39,8 @@ class CitiesFragment :
 
     private lateinit var citiesAdapter: CitiesAdapter
     private var prevBG: Drawable? = null
+
+    private var _filter: Filter? = null
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
@@ -113,14 +112,46 @@ class CitiesFragment :
         viewModel.apply {
             cities.observe(viewLifecycleOwner, { cities ->
                 if (cities != null) {
+                    if (_filter != null) {
+                        val firstCity = cities.firstOrNull() ?: return@observe
+                        val indices = firstCity.dates.mapIndexed() { index, date ->
+                            if (date >= _filter!!.startDate && date <= _filter!!.endDate) {
+                                return@mapIndexed index
+                            } else {
+                                return@mapIndexed -1
+                            }
+                        }.filter { it != -1 }
+                        cities.forEach {  city ->
+                            var isMatchesFilter = true
+                            for (i in indices) {
+                                val temperature = city.temperatures[i]
+                                val temperatureMatches =
+                                    temperature.min >= _filter!!.temperature.min &&
+                                    temperature.max <= _filter!!.temperature.max
+                                isMatchesFilter = isMatchesFilter && temperatureMatches
+                            }
+                            city.isMatchesFilter = isMatchesFilter
+                        }
+                    }
                     citiesAdapter.setData(cities)
                 }
             })
             filter.observe(viewLifecycleOwner, { filter ->
-                if (filter != null) {
-                    val cities = citiesAdapter.cities.map { city ->
-                        //val dates = city.temperatures.ke
+                _filter = filter
+                if (_filter != null) {
+                    citiesAdapter.cities.map { city ->
+                        city.isMatchesFilter = (
+                            city.dates.all { date ->
+                                date >= _filter!!.startDate &&
+                                date <= _filter!!.endDate
+                            } &&
+                            city.temperatures.all { temperature ->
+                                temperature.min >= _filter!!.temperature.min &&
+                                temperature.max <= _filter!!.temperature.max
+                            }
+                        )
                     }
+                    citiesAdapter.notifyDataSetChanged()
                 }
             })
         }
