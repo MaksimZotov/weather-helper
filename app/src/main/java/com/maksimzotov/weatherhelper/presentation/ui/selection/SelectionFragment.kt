@@ -8,13 +8,16 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
-import com.maksimzotov.weatherhelper.domain.entities.indicators.Temperature
+import com.maksimzotov.weatherhelper.domain.entities.City
+import com.maksimzotov.weatherhelper.domain.entities.Date
+import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
 import java.util.*
 import javax.inject.Inject
@@ -32,14 +35,14 @@ class SelectionFragment :
 
     private lateinit var citiesAdapter: CitiesAdapter
     private val citiesStub = setOf(
-        City("Moscow", mapOf("Today" to Temperature(0, 5))),
-        City("Kiev", mapOf("Today" to Temperature(5, 10))),
-        City("Minsk", mapOf("Today" to Temperature(10, 15)))
+        City("Moscow", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0))),
+        City("Kiev", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0))),
+        City("Minsk", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0)))
     )
 
     override fun onAttach(context: Context) {
+        requireActivity().appComponent.inject(this)
         super.onAttach(context)
-        requireActivity().appComponent.injectSelectionFragment(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,18 +60,31 @@ class SelectionFragment :
             DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         )
 
-        viewModel.response.observe(viewLifecycleOwner, { response ->
-            if (response.isSuccessful) {
-                Toast.makeText(context, response.body().toString(), Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context,response.toString(), Toast.LENGTH_SHORT).show()
-            }
-        })
+        viewModel.apply {
+            popBackstack.observe(viewLifecycleOwner, { flag ->
+                if (flag) {
+                    viewModel.popBackstack.value = false
+                    findNavController().popBackStack()
+                }
+            })
+
+            loadedCity.observe(viewLifecycleOwner, { response ->
+                if (response.isSuccessful) {
+                    Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context,response.toString(), Toast.LENGTH_LONG).show()
+                }
+            })
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireActivity().closeKeyboard()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_menu, menu)
-
         val menuItem = menu.findItem(R.id.menu_search)
         val searchView = menuItem.actionView as SearchView
         searchView.setOnQueryTextListener(this)
@@ -86,8 +102,7 @@ class SelectionFragment :
         return onQueryTextSubmit(newText)
     }
 
-    override fun onCityClick(name: String) {
-        viewModel.getCity(name)
-        //findNavController().popBackStack()
+    override fun onCityClick(position: Int) {
+        viewModel.addCity(citiesAdapter.cities[position].name)
     }
 }

@@ -1,23 +1,23 @@
 package com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.maksimzotov.weatherhelper.databinding.CityItemBinding
-import com.maksimzotov.weatherhelper.domain.entities.cities.City
-import com.maksimzotov.weatherhelper.presentation.main.listeners.OnItemClickListener
-import java.lang.StringBuilder
+import com.maksimzotov.weatherhelper.domain.entities.City
 
 class CitiesAdapter (
-    var cities: MutableList<City>,
+    var cities: List<City>,
     private val onCityClickListener: OnCityClickListener
 ) : RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
 
     interface OnCityClickListener {
-        fun onCityClick(name: String)
+        fun onCityClick(position: Int)
     }
 
-    fun setData(cities: MutableList<City>) {
+    fun setData(cities: List<City>) {
         this.cities = cities
         notifyDataSetChanged()
     }
@@ -29,12 +29,17 @@ class CitiesAdapter (
 
         init {
             binding.root.setOnClickListener {
-                onCityClickListener.onCityClick(binding.cityName.text.toString())
+                onCityClickListener.onCityClick(adapterPosition)
             }
         }
 
         fun bind(city: City) {
-            binding.cityName.setText(city.name)
+            binding.cityName.text = city.name
+            if (city.isMatchesFilter) {
+                binding.root.background = ColorDrawable(Color.GREEN)
+            } else {
+                binding.root.background = ColorDrawable(Color.WHITE)
+            }
         }
     }
 

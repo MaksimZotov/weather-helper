@@ -1,7 +1,94 @@
 package com.maksimzotov.weatherhelper.presentation.ui.filter
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.maksimzotov.weatherhelper.domain.entities.Date
+import com.maksimzotov.weatherhelper.domain.entities.DefaultFilters
+import com.maksimzotov.weatherhelper.domain.entities.Filter
+import com.maksimzotov.weatherhelper.domain.entities.Temperature
+import com.maksimzotov.weatherhelper.domain.usecases.GetCurrentFilterUseCase
+import com.maksimzotov.weatherhelper.domain.usecases.SetCurrentFilterUseCase
+import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import kotlinx.coroutines.launch
+import java.util.*
+import javax.inject.Inject
 
-class FilterViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+class FilterViewModel(
+    private val preference: Preferences,
+    private val getCurrentFilterUseCase: GetCurrentFilterUseCase,
+    private val setCurrentFilterUseCase: SetCurrentFilterUseCase
+) : ViewModel() {
+    private val dateConverter = DateConverter()
+    private val dateFormat = dateConverter.dateFormat
+    private val defaultDateStr = dateFormat.format(Calendar.getInstance().time)
+    private val defaultDate = createDate(defaultDateStr)
+    private val defaultRangeTemperature = 15 to 35
+
+    val firstDate = MutableLiveData(defaultDateStr)
+    val lastDate = MutableLiveData(defaultDateStr)
+    val rangeTemperature = MutableLiveData(defaultRangeTemperature)
+
+    val filter: LiveData<Filter?> = when (preference) {
+        Preferences.CURRENT_FILTER -> getCurrentFilterUseCase.getCurrentFilter().asLiveData()
+        Preferences.DRY_CLIMATE -> MutableLiveData(
+            DefaultFilters.getFiltersForDryClimate(defaultDate, defaultDate)
+        )
+        Preferences.TEMPERATE_CLIMATE -> MutableLiveData(
+            DefaultFilters.getFilterForTemperateClimate(defaultDate, defaultDate)
+        )
+    }
+
+    val popBackstack = MutableLiveData(false)
+
+    private var _flagSetCurrentFilter = true
+    val flagSetCurrentFilter: Boolean get() {
+        val prev = _flagSetCurrentFilter
+        _flagSetCurrentFilter = false
+        return prev
+    }
+
+    fun setCurrentFilter() {
+        val firstDate = firstDate.value ?: return
+        val lastDate = lastDate.value ?: return
+        val rangeTemperature = rangeTemperature.value ?: return
+
+        viewModelScope.launch {
+            setCurrentFilterUseCase.setCurrentFilter(
+                Filter(
+                    createDate(firstDate),
+                    createDate(lastDate),
+                    Temperature(rangeTemperature.first, rangeTemperature.second)
+                )
+            )
+            popBackstack.value = true
+        }
+    }
+
+    class Factory @AssistedInject constructor(
+        @Assisted("preference") private val preference: Preferences,
+        private val getCurrentFilterUseCase: GetCurrentFilterUseCase,
+        private val setCurrentFilterUseCase: SetCurrentFilterUseCase
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return FilterViewModel(
+                preference,
+                getCurrentFilterUseCase,
+                setCurrentFilterUseCase
+            ) as T
+        }
+
+        @AssistedFactory
+        interface FactoryForVMFactory {
+            fun create(
+                @Assisted("preference") preference: Preferences
+            ): FilterViewModel.Factory
+        }
+    }
+
+    private fun createDate(dateString: String): Date {
+        val date = dateConverter.fromStringToList(dateString)
+        return Date(date[0], date[1], date[2])
+    }
 }

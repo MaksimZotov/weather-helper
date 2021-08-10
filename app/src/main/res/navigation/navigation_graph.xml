@@ -38,7 +38,12 @@
         android:id="@+id/filterFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.filter.FilterFragment"
         android:label="Filter"
-        tools:layout="@layout/filter_fragment" />
+        tools:layout="@layout/filter_fragment" >
+        <argument
+            android:name="preference"
+            app:argType="com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences"
+            android:defaultValue="CURRENT_FILTER" />
+    </fragment>
     <fragment
         android:id="@+id/cityFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.city.CityFragment"
@@ -47,15 +52,18 @@
         <action
             android:id="@+id/action_cityFragment_to_indicatorsFragment"
             app:destination="@id/indicatorsSettingsFragment" />
+        <argument
+            android:name="city"
+            app:argType="com.maksimzotov.weatherhelper.domain.entities.City" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.SettingsFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.main.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/settings_fragment" />
     <fragment
         android:id="@+id/indicatorsSettingsFragment"
-        android:name="com.maksimzotov.weatherhelper.presentation.ui.city.settings.IndicatorsSettingsFragment"
-        android:label="IndicatorsFragment"
+        android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.indicators.IndicatorsSettingsFragment"
+        android:label="Indicators"
         tools:layout="@layout/indicators_settings_fragment" />
 </navigation>
