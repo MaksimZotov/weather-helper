@@ -9,56 +9,74 @@ import java.lang.reflect.Type
 import kotlin.math.roundToInt
 
 class CityForecastDeserializer : JsonDeserializer<City> {
-    private val fromKelvin = 273.15
-    private val separatorIndex = 10
-
-    private val mainRegex = Regex(
-        "(\\d{4}-\\d{2}-\\d{2} 00:00:00)|\"temp_min\":[\\d\\.]+,\"temp_max\":[\\d\\.]+"
-    )
-    private val dateRegex = Regex("\\d{4}-\\d{2}-\\d{2} 00:00:00")
-    private val separatorRegex = Regex(":|,")
 
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
         context: JsonDeserializationContext?
     ): City {
-        val jsonTemp = json ?: throw IllegalArgumentException("json must not be null")
-        val jsonData = jsonTemp.toString()
-        val name =
-            jsonTemp.asJsonObject.get("city").asJsonObject.get("name").toString().trim('\"')
-        val datesToTemperatures = getTemperaturesFromJson(jsonData)
-        val dates = datesToTemperatures.keys.map { dateString ->
-            val dateList = dateString.split('-')
-            Date(dateList[2].toInt(), dateList[1].toInt(), dateList[0].toInt())
+        json
+            ?: throw IllegalArgumentException("json must not be null")
+
+        val name = json
+            .asJsonObject
+            .get("city")
+            .asJsonObject
+            .get("name")
+            .toString().trim('\"')
+
+        val list = json
+            .asJsonObject
+            .get("list")
+            .asJsonArray
+
+        val datesString = mutableListOf<String>()
+        val temperatures = mutableListOf<Pair<Int, Int>>()
+
+        for (item in list) {
+            val itemAsJsonObject = item.asJsonObject
+            datesString.add(
+                itemAsJsonObject
+                    .get("dt_txt")
+                    .toString()
+                    .trimStart('\"')
+                    .substringBefore(' ')
+            )
+
+            val mainAsJsonObject = itemAsJsonObject.get("main").asJsonObject
+            val minTemperature = mainAsJsonObject.get("temp_min").toString().toFloat().roundToInt()
+            val maxTemperature = mainAsJsonObject.get("temp_max").toString().toFloat().roundToInt()
+            temperatures.add(minTemperature to maxTemperature)
         }
-        val temperatures = datesToTemperatures.values.toList()
-        return City(name, dates, temperatures)
-    }
 
-    fun getTemperaturesFromJson(jsonData: String): Map<String, Temperature> {
-        val matches = mainRegex.findAll(jsonData)
-        val parsedJsonData = matches.map { it.value }.joinToString().split(", ")
+        var prevDate = datesString.first()
+        val prevTemperatures = temperatures.first()
+        var minMaxTemperatures =
+            mutableListOf(prevTemperatures.first) to mutableListOf(prevTemperatures.second)
 
-        val temperatures = mutableMapOf<String, Temperature>()
-        var minMaxTemperatures = mutableListOf<Int>() to mutableListOf<Int>()
+        val datesForCity = mutableListOf<Date>()
+        val temperaturesForCity = mutableListOf<Temperature>()
 
-        for (item in parsedJsonData) {
-            if (item.matches(dateRegex)) {
-                temperatures[item.substring(0, separatorIndex)] = Temperature(
-                    minMaxTemperatures.first.minOrNull()!!,
-                    minMaxTemperatures.first.maxOrNull()!!
-                )
+        for (i in 1 until datesString.size) {
+            if (datesString[i] != prevDate) {
+                val minTemperature = minMaxTemperatures.first.minOrNull()!!
+                val maxTemperature = minMaxTemperatures.second.maxOrNull()!!
+                datesForCity.add(createDate(prevDate))
+                temperaturesForCity.add(Temperature(minTemperature, maxTemperature))
                 minMaxTemperatures = mutableListOf<Int>() to mutableListOf<Int>()
+                prevDate = datesString[i]
             } else {
-                val temp = item.split(separatorRegex)
-                val min = temp[1].toDouble() - fromKelvin
-                val max = temp[3].toDouble() - fromKelvin
-                minMaxTemperatures.first.add(min.roundToInt())
-                minMaxTemperatures.second.add(max.roundToInt())
+                val curTemperatures = temperatures[i]
+                minMaxTemperatures.first.add(curTemperatures.first)
+                minMaxTemperatures.second.add(curTemperatures.second)
             }
         }
 
-        return temperatures
+        return City(name, datesForCity, temperaturesForCity)
+    }
+
+    private fun createDate(dateString: String): Date {
+        val list = dateString.split('-').reversed().map { it.toInt() }
+        return Date(list[0], list[1], list[2])
     }
 }
