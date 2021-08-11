@@ -49,18 +49,9 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val date = dateConverter.fromStringToList(dateFormat.format(Calendar.getInstance().time))
-        val day = date[0]
-        val month = date[1]
-        val year = date[2]
-
         binding.apply {
-            firstDay.setOnClickListener {
-                DatePickerDialog(requireActivity(), onFirstDateSetListener, year, month, day).show()
-            }
-            lastDay.setOnClickListener {
-                DatePickerDialog(requireActivity(), onLastDateSetListener, year, month, day).show()
-            }
+            firstDay.setOnClickListener { showDatePicker(firstDay.text, onFirstDateSetListener) }
+            lastDay.setOnClickListener { showDatePicker(lastDay.text, onLastDateSetListener) }
 
             rangeSliderTemperature
                 .addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
@@ -143,5 +134,16 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 rangeHumidity.value = minHumidity to maxHumidity
             })
         }
+    }
+
+    private fun showDatePicker(
+        dayInBottom: CharSequence,
+        onDateSetListener: DatePickerDialog.OnDateSetListener
+    ) {
+        val date = dateConverter.fromCharSequenceToList(dayInBottom)
+        val day = date[0]
+        val month = date[1]
+        val year = date[2]
+        DatePickerDialog(requireActivity(), onDateSetListener, year, month, day).show()
     }
 }

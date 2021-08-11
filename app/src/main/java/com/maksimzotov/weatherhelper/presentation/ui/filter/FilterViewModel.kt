@@ -90,7 +90,7 @@ class FilterViewModel(
     }
 
     private fun createDate(dateString: String): Date {
-        val date = dateConverter.fromStringToList(dateString)
+        val date = dateConverter.fromCharSequenceToList(dateString)
         return Date(date[0], date[1], date[2])
     }
 }
