@@ -4,15 +4,15 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.maksimzotov.weatherhelper.presentation.entities.settings.BottomNavigation
 import com.maksimzotov.weatherhelper.presentation.entities.settings.DarkTheme
-import com.maksimzotov.weatherhelper.presentation.entities.settings.Humidity
-import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
+import com.maksimzotov.weatherhelper.presentation.entities.settings.HumidityToShow
+import com.maksimzotov.weatherhelper.presentation.entities.settings.TemperatureToShow
 
 @Database(
     entities = [
         BottomNavigation::class,
         DarkTheme::class,
-        Temperature::class,
-        Humidity::class
+        TemperatureToShow::class,
+        HumidityToShow::class
     ],
     version = 1
 )

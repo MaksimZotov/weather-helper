@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.maksimzotov.weatherhelper.di.main.appComponent
-import com.maksimzotov.weatherhelper.presentation.entities.settings.Humidity
-import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
+import com.maksimzotov.weatherhelper.presentation.entities.settings.HumidityToShow
+import com.maksimzotov.weatherhelper.presentation.entities.settings.TemperatureToShow
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -13,18 +13,18 @@ class IndicatorsSettingsViewModel(application: Application): AndroidViewModel(ap
     private val settingsRepo = application.appComponent.androidSettingsRepository
 
     fun showTemperature() = viewModelScope.launch(Dispatchers.IO) {
-        settingsRepo.setTemperature(Temperature(true))
+        settingsRepo.setTemperatureToShow(TemperatureToShow(true))
     }
 
     fun hideTemperature() = viewModelScope.launch(Dispatchers.IO) {
-        settingsRepo.setTemperature(Temperature(false))
+        settingsRepo.setTemperatureToShow(TemperatureToShow(false))
     }
 
     fun showHumidity() = viewModelScope.launch(Dispatchers.IO) {
-        settingsRepo.setHumidity(Humidity(true))
+        settingsRepo.setHumidityToShow(HumidityToShow(true))
     }
 
     fun hideHumidity() = viewModelScope.launch(Dispatchers.IO) {
-        settingsRepo.setHumidity(Humidity(false))
+        settingsRepo.setHumidityToShow(HumidityToShow(false))
     }
 }

@@ -29,11 +29,11 @@ class IndicatorsFragment(
             indicatorHumidityMin.text = toStrConverter.convertHumidity(humidity.min)
             indicatorHumidityMax.text = toStrConverter.convertHumidity(humidity.max)
 
-            settingsSharedViewModel.temperature.observe(viewLifecycleOwner, { temperature ->
+            settingsSharedViewModel.temperatureToShow.observe(viewLifecycleOwner, { temperature ->
                 setVisibility(indicatorTemperature, temperature == null || temperature.isAble)
             })
 
-            settingsSharedViewModel.humidity.observe(viewLifecycleOwner, { humidity ->
+            settingsSharedViewModel.humidityToShow.observe(viewLifecycleOwner, { humidity ->
                 setVisibility(indicatorHumidity, humidity == null || humidity.isAble)
             })
         }
