@@ -62,10 +62,11 @@ class SelectionFragment :
             })
 
             loadedCity.observe(viewLifecycleOwner, { response ->
-                if (response.isSuccessful) {
-                    Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(context,response.toString(), Toast.LENGTH_LONG).show()
+                if (!response.isSuccessful) {
+                    val msg = "Failed to load the city"
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                    binding.citiesRecyclerView.visibility = View.VISIBLE
+                    binding.messageLoading.visibility = View.GONE
                 }
             })
         }
@@ -97,6 +98,7 @@ class SelectionFragment :
 
     override fun onCityClick(position: Int) {
         val name = namesAdapter.names[position]
+        requireActivity().closeKeyboard()
         notifyAboutLoading(name)
         viewModel.addCity(name)
     }

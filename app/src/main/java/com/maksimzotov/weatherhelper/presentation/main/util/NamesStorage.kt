@@ -324,6 +324,7 @@ class NamesStorage {
         "Jurga",
         "Yakutsk",
         "Yalta",
-        "Yaroslavl"
+        "Yaroslavl",
+        "! invalid name",
     )
 }
