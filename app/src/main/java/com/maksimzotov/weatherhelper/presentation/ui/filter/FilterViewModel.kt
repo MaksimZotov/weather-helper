@@ -22,8 +22,8 @@ class FilterViewModel(
     private val dateFormat = dateConverter.dateFormat
     private val defaultDateStr = dateFormat.format(Calendar.getInstance().time)
     private val defaultDate = createDate(defaultDateStr)
-    private val defaultRangeTemperature = 15 to 35
-    private val defaultRangeHumidity = 25 to 75
+    private val defaultRangeTemperature = 0 to 0
+    private val defaultRangeHumidity = 0 to 0
 
     val firstDate = MutableLiveData(defaultDateStr)
     val lastDate = MutableLiveData(defaultDateStr)
@@ -47,6 +47,23 @@ class FilterViewModel(
         val prev = _flagSetCurrentFilter
         _flagSetCurrentFilter = false
         return prev
+    }
+
+    fun setDefaultFilter() = viewModelScope.launch {
+        setCurrentFilterUseCase.setCurrentFilter(
+            Filter(
+                startDate = defaultDate,
+                endDate = defaultDate,
+                temperature = Temperature(
+                    defaultRangeTemperature.first,
+                    defaultRangeTemperature.second
+                ),
+                humidity = Humidity(
+                    defaultRangeHumidity.first,
+                    defaultRangeHumidity.second
+                )
+            )
+        )
     }
 
     fun setCurrentFilter() {

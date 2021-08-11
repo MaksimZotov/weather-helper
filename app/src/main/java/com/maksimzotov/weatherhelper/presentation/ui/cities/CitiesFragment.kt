@@ -123,12 +123,16 @@ class CitiesFragment :
         viewModel.apply {
             cities.observe(viewLifecycleOwner, { cities ->
                 if (cities != null && citiesAreUpdated) {
-                    val filter = filter.value ?: return@observe
-                    if (cities.isEmpty()) {
+                    val filter = filter.value
+                    if (filter != null) {
+                        if (cities.isEmpty()) {
+                            citiesAdapter.setData(cities)
+                            return@observe
+                        }
+                        checkMatchingToFilter(cities, filter)
+                    } else {
                         citiesAdapter.setData(cities)
-                        return@observe
                     }
-                    checkMatchingToFilter(cities, filter)
                 }
             })
             filter.observe(viewLifecycleOwner, { filter ->

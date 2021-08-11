@@ -121,7 +121,11 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
             })
 
             filter.observe(viewLifecycleOwner, { filter ->
-                if (filter == null || !flagSetCurrentFilter) {
+                if (filter == null) {
+                    viewModel.setDefaultFilter()
+                    return@observe
+                }
+                if (!flagSetCurrentFilter) {
                     return@observe
                 }
                 val minTemperature = filter.temperature.min
@@ -132,6 +136,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 lastDate.value = filter.endDate.toString()
                 rangeTemperature.value = minTemperature to maxTemperature
                 rangeHumidity.value = minHumidity to maxHumidity
+                binding.filter.visibility = View.VISIBLE
             })
         }
     }
