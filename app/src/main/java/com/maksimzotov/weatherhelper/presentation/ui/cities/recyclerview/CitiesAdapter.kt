@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.maksimzotov.weatherhelper.databinding.CityItemBinding
 import com.maksimzotov.weatherhelper.domain.entities.City
+import com.maksimzotov.weatherhelper.presentation.ui.cities.util.Colors
 
 class CitiesAdapter (
     var cities: List<City>,
-    private val onCityClickListener: OnCityClickListener
+    private val onCityClickListener: OnCityClickListener,
+    private val isNightModeOn: Boolean,
+    private val colors: Colors
 ) : RecyclerView.Adapter<CitiesAdapter.ViewHolder>() {
 
     interface OnCityClickListener {
@@ -24,7 +27,9 @@ class CitiesAdapter (
 
     class ViewHolder(
         private val binding: CityItemBinding,
-        private val onCityClickListener: OnCityClickListener
+        private val onCityClickListener: OnCityClickListener,
+        private val isNightModeOn: Boolean,
+        private val colors: Colors
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -36,18 +41,17 @@ class CitiesAdapter (
         fun bind(city: City) {
             binding.cityName.text = city.name
             binding.cityLastUpdate.text = city.lastUpdate
-            if (city.isMatchesToFilter) {
-                binding.root.background = ColorDrawable(Color.GREEN)
-            } else {
-                binding.root.background = ColorDrawable(Color.WHITE)
-            }
+            binding.root.background =
+                colors.getStandardColor(isNightModeOn, city.isMatchesToFilter)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             CityItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            onCityClickListener
+            onCityClickListener,
+            isNightModeOn,
+            colors
         )
     }
 

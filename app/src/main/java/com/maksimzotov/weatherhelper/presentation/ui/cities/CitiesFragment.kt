@@ -23,10 +23,11 @@ import com.maksimzotov.weatherhelper.domain.entities.Filter
 import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
+import com.maksimzotov.weatherhelper.presentation.main.extensions.isNightModeOn
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
+import com.maksimzotov.weatherhelper.presentation.ui.cities.util.Colors
 import java.util.*
 import javax.inject.Inject
-
 
 class CitiesFragment :
     TopLevelFragment<CitiesFragmentBinding>(CitiesFragmentBinding::inflate),
@@ -40,7 +41,9 @@ class CitiesFragment :
     }
 
     private lateinit var citiesAdapter: CitiesAdapter
-    private var prevBG: Drawable? = null
+
+    private val colors = Colors()
+
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
@@ -149,7 +152,12 @@ class CitiesFragment :
     }
 
     private fun configureRecyclerView() {
-        citiesAdapter = CitiesAdapter(listOf(), this)
+        citiesAdapter = CitiesAdapter(
+            listOf(),
+            this,
+            requireActivity().isNightModeOn(),
+            colors
+        )
 
         val recyclerView = binding.indicatorsRecyclerView
         recyclerView.adapter = citiesAdapter
@@ -191,8 +199,8 @@ class CitiesFragment :
                     actionState == ItemTouchHelper.ACTION_STATE_DRAG ||
                     actionState == ItemTouchHelper.ACTION_STATE_SWIPE
                 ) {
-                    prevBG = viewHolder?.itemView?.background
-                    viewHolder?.itemView?.background = ColorDrawable(Color.LTGRAY)
+                    viewHolder?.itemView?.background =
+                        colors.getColorOnPressed(requireActivity().isNightModeOn())
                 }
             }
 
@@ -201,7 +209,12 @@ class CitiesFragment :
                 viewHolder: RecyclerView.ViewHolder
             ) {
                 super.clearView(recyclerView, viewHolder)
-                viewHolder.itemView.background = prevBG
+                if (viewHolder.adapterPosition >= 0) {
+                    viewHolder.itemView.background = colors.getStandardColor(
+                        requireActivity().isNightModeOn(),
+                        citiesAdapter.cities[viewHolder.adapterPosition].isMatchesToFilter
+                    )
+                }
             }
 
         }).attachToRecyclerView(recyclerView)

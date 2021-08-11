@@ -1,6 +1,7 @@
 package com.maksimzotov.weatherhelper.presentation.main.extensions
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.view.inputmethod.InputMethodManager
 import com.maksimzotov.weatherhelper.presentation.main.listeners.NavDrawerLocker
 
@@ -23,4 +24,9 @@ fun Activity.unlockNavDrawer() {
     } else {
         throw IllegalStateException("Your activity does not implement NavDrawerLocker")
     }
+}
+
+fun Activity.isNightModeOn(): Boolean {
+    val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    return mode == Configuration.UI_MODE_NIGHT_YES
 }
