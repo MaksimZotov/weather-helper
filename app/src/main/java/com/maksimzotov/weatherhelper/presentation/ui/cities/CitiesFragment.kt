@@ -24,6 +24,7 @@ import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
+import java.util.*
 import javax.inject.Inject
 
 
@@ -87,13 +88,16 @@ class CitiesFragment :
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        Toast.makeText(requireContext(), "Submit", Toast.LENGTH_SHORT).show()
+        val filter = query?.lowercase(Locale.getDefault()) ?: return true
+        val cities = viewModel.cities.value ?: return true
+        citiesAdapter.setData(cities.filter { city ->
+            city.name.lowercase(Locale.getDefault()).startsWith(filter)
+        }.toMutableList())
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        Toast.makeText(requireContext(), "Change", Toast.LENGTH_SHORT).show()
-        return true
+        return onQueryTextSubmit(newText)
     }
 
     private fun configureBinding() {
