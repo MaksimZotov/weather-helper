@@ -1,15 +1,11 @@
 package com.maksimzotov.weatherhelper.presentation.ui.cities
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -25,7 +21,7 @@ import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.main.extensions.isNightModeOn
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
-import com.maksimzotov.weatherhelper.presentation.ui.cities.util.Colors
+import com.maksimzotov.weatherhelper.presentation.main.util.Colors
 import java.util.*
 import javax.inject.Inject
 

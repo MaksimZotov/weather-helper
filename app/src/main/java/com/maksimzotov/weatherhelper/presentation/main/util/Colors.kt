@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.ui.cities.util
+package com.maksimzotov.weatherhelper.presentation.main.util
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable

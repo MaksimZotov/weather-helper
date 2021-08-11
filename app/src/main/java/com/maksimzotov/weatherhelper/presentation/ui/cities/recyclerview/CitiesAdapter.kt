@@ -1,13 +1,11 @@
 package com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.maksimzotov.weatherhelper.databinding.CityItemBinding
 import com.maksimzotov.weatherhelper.domain.entities.City
-import com.maksimzotov.weatherhelper.presentation.ui.cities.util.Colors
+import com.maksimzotov.weatherhelper.presentation.main.util.Colors
 
 class CitiesAdapter (
     var cities: List<City>,
