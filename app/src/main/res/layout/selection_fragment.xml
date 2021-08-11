@@ -9,12 +9,21 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.selection.SelectionFragment">
 
+        <TextView
+            android:id="@+id/message_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Loading..."
+            android:gravity="center"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cities_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </FrameLayout>
 </layout>

@@ -96,6 +96,16 @@ class SelectionFragment :
     }
 
     override fun onCityClick(position: Int) {
-        viewModel.addCity(namesAdapter.names[position])
+        val name = namesAdapter.names[position]
+        notifyAboutLoading(name)
+        viewModel.addCity(name)
+    }
+
+    private fun notifyAboutLoading(name: String) {
+        binding.apply {
+            citiesRecyclerView.visibility = View.GONE
+            messageLoading.visibility = View.VISIBLE
+            messageLoading.text = "Loading the $name..."
+        }
     }
 }
