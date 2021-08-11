@@ -35,11 +35,11 @@ class IndicatorsSettingsFragment
             }
 
             val temperature = settingsSharedViewModel.temperature.value
-            switchTemperature.isChecked = temperature != null && temperature.isAble
+            switchTemperature.isChecked = temperature == null || temperature.isAble
             switchTemperature.jumpDrawablesToCurrentState()
 
             val humidity = settingsSharedViewModel.humidity.value
-            switchHumidity.isChecked = humidity != null && humidity.isAble
+            switchHumidity.isChecked = humidity == null || humidity.isAble
             switchHumidity.jumpDrawablesToCurrentState()
         }
     }
