@@ -15,6 +15,7 @@ import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
+import com.maksimzotov.weatherhelper.presentation.main.util.NamesStorage
 import com.maksimzotov.weatherhelper.presentation.ui.selection.recyclerview.NamesAdapter
 import java.util.*
 import javax.inject.Inject

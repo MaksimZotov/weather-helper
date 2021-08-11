@@ -10,26 +10,35 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="196dp"
-        android:background="?attr/colorBottomSheetBG">
+        android:background="?attr/colorBottomSheetBody">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="8dp"
-            android:src="@drawable/ic_remove_24"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="4dp"
-            android:layout_gravity="center|top">
-        </ImageView>
-
-
-        <TextView
-            android:id="@+id/filter_bottom_sheet_top"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:gravity="center"
-            android:text="Filter"
-            android:fontFamily="sans-serif-medium"
-            android:textSize="16sp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/filter_bottom_sheet_top">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="8dp"
+                android:src="@drawable/ic_remove_24"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="4dp"
+                android:layout_gravity="center|top">
+            </ImageView>
+
+
+            <TextView
+                android:id="@+id/filter_bottom_sheet_top"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:text="Filter"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
 
 
         <LinearLayout

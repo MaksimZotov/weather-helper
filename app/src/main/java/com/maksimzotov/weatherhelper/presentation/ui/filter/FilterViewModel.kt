@@ -6,12 +6,12 @@ import com.maksimzotov.weatherhelper.domain.entities.Date
 import com.maksimzotov.weatherhelper.domain.usecases.GetCurrentFilterUseCase
 import com.maksimzotov.weatherhelper.domain.usecases.SetCurrentFilterUseCase
 import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
+import com.maksimzotov.weatherhelper.presentation.main.util.DateConverter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 
 class FilterViewModel(
     private val preference: Preferences,

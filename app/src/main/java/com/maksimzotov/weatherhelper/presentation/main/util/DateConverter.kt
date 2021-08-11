@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.ui.filter
+package com.maksimzotov.weatherhelper.presentation.main.util
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat

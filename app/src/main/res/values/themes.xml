@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="colorNavDrawerHeaderBG">#00D88C</item>
         <item name="colorNavDrawerText">@color/white</item>
-        <item name="colorBottomSheetBG">#00AFFF</item>
+        <item name="colorBottomSheetTop">#00AFFF</item>
+        <item name="colorBottomSheetBody">#33BFFF</item>
     </style>
 </resources>

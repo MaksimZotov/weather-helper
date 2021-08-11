@@ -2,5 +2,6 @@
 <resources>
     <attr name="colorNavDrawerHeaderBG" format="color" />
     <attr name="colorNavDrawerText" format="color" />
-    <attr name="colorBottomSheetBG" format="color" />
+    <attr name="colorBottomSheetTop" format="color" />
+    <attr name="colorBottomSheetBody" format="color" />
 </resources>

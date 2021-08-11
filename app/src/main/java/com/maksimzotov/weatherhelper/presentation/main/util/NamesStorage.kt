@@ -1,4 +1,4 @@
-package com.maksimzotov.weatherhelper.presentation.ui.selection
+package com.maksimzotov.weatherhelper.presentation.main.util
 
 // In the future this should be replaced with some service that
 // provides a list of cities based on the first entered letters
