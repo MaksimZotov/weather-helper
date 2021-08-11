@@ -43,7 +43,6 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
         super.onAttach(context)
     }
 
-    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

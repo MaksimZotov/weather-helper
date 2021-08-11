@@ -14,7 +14,8 @@ data class City(
     @PrimaryKey var name: String,
     val dates: List<Date>,
     val temperatures: List<Temperature>,
-    val humidityList: List<Humidity>
+    val humidityList: List<Humidity>,
+    var lastUpdate: String
 ) : Serializable {
     @Ignore private var _isMatchesToFilter = false
     val isMatchesToFilter get () = _isMatchesToFilter

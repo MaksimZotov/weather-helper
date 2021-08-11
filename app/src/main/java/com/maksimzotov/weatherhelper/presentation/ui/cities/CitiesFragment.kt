@@ -71,11 +71,19 @@ class CitiesFragment :
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_menu, menu)
+        inflater.inflate(R.menu.searh_and_update_menu, menu)
 
         val menuItem = menu.findItem(R.id.menu_search)
         val searchView = menuItem.actionView as SearchView
         searchView.setOnQueryTextListener(this)
+
+        menu.findItem(R.id.menu_update).setOnMenuItemClickListener {
+            val cities = citiesAdapter.cities
+            cities.forEach { it.lastUpdate = "Loading..." }
+            citiesAdapter.notifyDataSetChanged()
+            viewModel.updateCities(citiesAdapter.cities)
+            true
+        }
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -110,7 +118,7 @@ class CitiesFragment :
     private fun configureViewModel() {
         viewModel.apply {
             cities.observe(viewLifecycleOwner, { cities ->
-                if (cities != null) {
+                if (cities != null && citiesAreUpdated) {
                     val filter = filter.value ?: return@observe
                     if (cities.isEmpty()) {
                         citiesAdapter.setData(cities)

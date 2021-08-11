@@ -1,5 +1,6 @@
 package com.maksimzotov.weatherhelper.data.main.retrofit.deserializers
 
+import android.annotation.SuppressLint
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
@@ -8,10 +9,13 @@ import com.maksimzotov.weatherhelper.domain.entities.Date
 import com.maksimzotov.weatherhelper.domain.entities.Humidity
 import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.roundToInt
 
 class CityForecastDeserializer : JsonDeserializer<City> {
 
+    @SuppressLint("SimpleDateFormat")
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
@@ -89,11 +93,15 @@ class CityForecastDeserializer : JsonDeserializer<City> {
             }
         }
 
+        val dateFormat = SimpleDateFormat("dd.MM HH:mm")
+        val lastUpdate = dateFormat.format(Calendar.getInstance().time)
+
         return City(
             name = name,
             dates = datesForCity,
             temperatures = temperaturesForCity,
-            humidityList = humidityListForCity
+            humidityList = humidityListForCity,
+            lastUpdate = lastUpdate
         )
     }
 
