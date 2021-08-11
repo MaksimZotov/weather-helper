@@ -36,7 +36,7 @@ class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::infl
 
         binding.viewPager.adapter = ForecastAdapter(
             fragments,
-            requireActivity().supportFragmentManager,
+            childFragmentManager,
             lifecycle
         )
 
@@ -55,5 +55,10 @@ class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::infl
             findNavController().navigate(R.id.indicatorsSettingsFragment)
             true
         }
+    }
+
+    override fun onPause() {
+        binding.viewPager.adapter = null
+        super.onPause()
     }
 }
