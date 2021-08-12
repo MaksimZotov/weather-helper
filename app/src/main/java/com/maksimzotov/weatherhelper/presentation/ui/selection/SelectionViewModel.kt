@@ -18,9 +18,14 @@ class SelectionViewModel(
     val cities = getCitiesUseCase.getCities().asLiveData()
 
     val popBackstack = MutableLiveData(false)
+    val error = MutableLiveData(false)
 
     fun addCity(name: String) = viewModelScope.launch {
-        loadedCity.value = loadCityUseCase.loadCity(name)
+        try {
+            loadedCity.value = loadCityUseCase.loadCity(name)
+        } catch (ex: Exception) {
+            error.value = true
+        }
         val city = loadedCity.value?.body() ?: return@launch
         addCityUseCase.addCity(city)
         popBackstack.value = true

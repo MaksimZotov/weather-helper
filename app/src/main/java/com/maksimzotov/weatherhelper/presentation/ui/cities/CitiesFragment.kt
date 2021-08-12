@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,6 +19,7 @@ import com.maksimzotov.weatherhelper.domain.entities.City
 import com.maksimzotov.weatherhelper.domain.entities.Filter
 import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
+import com.maksimzotov.weatherhelper.presentation.main.extensions.checkInternet
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.main.extensions.isNightModeOn
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
@@ -36,15 +38,19 @@ class CitiesFragment :
         viewModelFactory
     }
 
-    private lateinit var citiesAdapter: CitiesAdapter
-    private lateinit var loadingString: String
     private val colors = Colors()
+
+    private lateinit var citiesAdapter: CitiesAdapter
+
+    private lateinit var loadingString: String
+    private lateinit var noInternetString: String
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
         super.onAttach(context)
 
         loadingString = getString(R.string.loading)
+        noInternetString = getString(R.string.you_have_not_internet)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,10 +85,11 @@ class CitiesFragment :
         searchView.setOnQueryTextListener(this)
 
         menu.findItem(R.id.menu_update).setOnMenuItemClickListener {
-            val cities = citiesAdapter.cities
-            cities.forEach { it.lastUpdate = "$loadingString..." }
-            citiesAdapter.notifyDataSetChanged()
-            viewModel.updateCities(citiesAdapter.cities)
+            if (requireActivity().checkInternet()) {
+                viewModel.updateCities(citiesAdapter.cities)
+            } else {
+                Toast.makeText(context, noInternetString, Toast.LENGTH_SHORT).show()
+            }
             true
         }
     }

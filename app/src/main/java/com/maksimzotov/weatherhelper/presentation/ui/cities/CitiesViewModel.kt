@@ -27,8 +27,12 @@ class CitiesViewModel(
         viewModelScope.launch {
             for (city in cities) {
                 if (!citiesAreUpdated) {
-                    val updatedCity = loadCityUseCase.loadCity(city.name).body() ?: continue
-                    updateCityUseCase.updateCity(updatedCity)
+                    try {
+                        val updatedCity = loadCityUseCase.loadCity(city.name).body() ?: continue
+                        updateCityUseCase.updateCity(updatedCity)
+                    } catch (ex: Exception) {
+                        updateCityUseCase.updateCity(city)
+                    }
                 }
             }
             _citiesAreUpdated = true

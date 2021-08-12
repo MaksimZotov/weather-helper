@@ -19,7 +19,7 @@ interface MainDao {
     @Query("SELECT * FROM ${MainTableNames.CITIES} ORDER BY name ASC")
     fun getCities(): Flow<List<City>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCity(city: City)
 
     @Delete

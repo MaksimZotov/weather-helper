@@ -4,6 +4,7 @@
         Built with:\n\nClean architecture\nMVVM\nDagger\nRetrofit\nRoom\nGson\nCoroutines\nNavigation Component\nDataBinding\nSafe args\nLiveData\nFlow\nJUnit
     </string>
     <string name="failed_to_load_the_city">Failed to load the city</string>
+    <string name="you_have_not_internet">You have not internet</string>
     <string-array name="preferences">
         <item>Current filter</item>
         <item>Temperate climate</item>

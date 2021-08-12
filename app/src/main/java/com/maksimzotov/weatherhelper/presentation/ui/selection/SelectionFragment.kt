@@ -14,6 +14,7 @@ import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.extensions.checkInternet
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
 import com.maksimzotov.weatherhelper.presentation.main.util.NamesStorage
 import com.maksimzotov.weatherhelper.presentation.ui.selection.recyclerview.NamesAdapter
@@ -36,6 +37,7 @@ class SelectionFragment :
 
     private lateinit var failedToLoadCityString: String
     private lateinit var loadingTheString: String
+    private lateinit var noInternetString: String
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
@@ -43,6 +45,7 @@ class SelectionFragment :
 
         failedToLoadCityString = getString(R.string.failed_to_load_the_city)
         loadingTheString = getString(R.string.loading_the)
+        noInternetString = getString(R.string.you_have_not_internet)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,15 +70,23 @@ class SelectionFragment :
                 }
             })
 
+            error.observe(viewLifecycleOwner, { error ->
+                if (error) {
+                    viewModel.error.value = false
+                    notifyAboutFail()
+                }
+            })
             loadedCity.observe(viewLifecycleOwner, { response ->
                 if (!response.isSuccessful) {
-                    val msg = failedToLoadCityString
-                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                    binding.citiesRecyclerView.visibility = View.VISIBLE
-                    binding.messageLoading.visibility = View.GONE
+                    notifyAboutFail()
                 }
             })
         }
+    }
+    private fun notifyAboutFail() {
+        Toast.makeText(context, failedToLoadCityString, Toast.LENGTH_SHORT).show()
+        binding.citiesRecyclerView.visibility = View.VISIBLE
+        binding.messageLoading.visibility = View.GONE
     }
 
     override fun onPause() {
@@ -103,10 +114,14 @@ class SelectionFragment :
     }
 
     override fun onCityClick(position: Int) {
-        val name = namesAdapter.names[position]
-        requireActivity().closeKeyboard()
-        notifyAboutLoading(name)
-        viewModel.addCity(name)
+        if (requireActivity().checkInternet()) {
+            val name = namesAdapter.names[position]
+            requireActivity().closeKeyboard()
+            notifyAboutLoading(name)
+            viewModel.addCity(name)
+        } else {
+            Toast.makeText(context, noInternetString, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun notifyAboutLoading(name: String) {
