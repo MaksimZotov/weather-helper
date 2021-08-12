@@ -4,21 +4,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.CityFragmentBinding
-import com.maksimzotov.weatherhelper.domain.entities.City
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.extensions.setTitleInAppBar
 import com.maksimzotov.weatherhelper.presentation.ui.city.viewpager.ForecastAdapter
-import com.maksimzotov.weatherhelper.presentation.ui.filter.FilterFragmentArgs
 import com.maksimzotov.weatherhelper.presentation.ui.indicators.IndicatorsFragment
 
 class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::inflate) {
 
     private val args by navArgs<CityFragmentArgs>()
+    private val city by lazy { args.city }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +27,19 @@ class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val cityStub = args.city
-        val fragments = cityStub.temperatures.map { IndicatorsFragment(it) }
-        val dates = cityStub.dates.map { it.toString() }
+        requireActivity().setTitleInAppBar(city.name)
+
+        val fragments = city.temperatures.mapIndexed { index, temperature ->
+            IndicatorsFragment(
+                temperature,
+                city.humidityList[index]
+            )
+        }
+        val dates = city.dates.map { it.toString() }
 
         binding.viewPager.adapter = ForecastAdapter(
             fragments,
-            requireActivity().supportFragmentManager,
+            childFragmentManager,
             lifecycle
         )
 

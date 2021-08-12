@@ -13,19 +13,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.SelectionFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
-import com.maksimzotov.weatherhelper.domain.entities.City
-import com.maksimzotov.weatherhelper.domain.entities.Date
-import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
-import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
+import com.maksimzotov.weatherhelper.presentation.main.util.NamesStorage
+import com.maksimzotov.weatherhelper.presentation.ui.selection.recyclerview.NamesAdapter
 import java.util.*
 import javax.inject.Inject
 
 class SelectionFragment :
     BaseFragment<SelectionFragmentBinding>(SelectionFragmentBinding::inflate),
     SearchView.OnQueryTextListener,
-    CitiesAdapter.OnCityClickListener {
+    NamesAdapter.OnCityClickListener {
 
     @Inject
     lateinit var viewModelFactory: SelectionViewModel.Factory
@@ -33,16 +31,18 @@ class SelectionFragment :
         viewModelFactory
     }
 
-    private lateinit var citiesAdapter: CitiesAdapter
-    private val citiesStub = setOf(
-        City("Moscow", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0))),
-        City("Kiev", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0))),
-        City("Minsk", listOf(Date(0, 0, 0)), listOf(Temperature(0, 0)))
-    )
+    private val namesStorage = NamesStorage()
+    private val namesAdapter = NamesAdapter(namesStorage.names, this)
+
+    private lateinit var failedToLoadCityString: String
+    private lateinit var loadingTheString: String
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
         super.onAttach(context)
+
+        failedToLoadCityString = getString(R.string.failed_to_load_the_city)
+        loadingTheString = getString(R.string.loading_the)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +53,8 @@ class SelectionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        citiesAdapter = CitiesAdapter(citiesStub.toMutableList(), this)
         val recyclerView = binding.citiesRecyclerView
-        recyclerView.adapter = citiesAdapter
+        recyclerView.adapter = namesAdapter
         recyclerView.addItemDecoration(
             DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL)
         )
@@ -69,10 +68,11 @@ class SelectionFragment :
             })
 
             loadedCity.observe(viewLifecycleOwner, { response ->
-                if (response.isSuccessful) {
-                    Toast.makeText(context, response.body().toString(), Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(context,response.toString(), Toast.LENGTH_LONG).show()
+                if (!response.isSuccessful) {
+                    val msg = failedToLoadCityString
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                    binding.citiesRecyclerView.visibility = View.VISIBLE
+                    binding.messageLoading.visibility = View.GONE
                 }
             })
         }
@@ -92,8 +92,8 @@ class SelectionFragment :
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         val filter = query?.lowercase(Locale.getDefault()) ?: return true
-        citiesAdapter.setData(citiesStub.filter {
-            it.name.lowercase(Locale.getDefault()).startsWith(filter)
+        namesAdapter.setData(namesStorage.names.filter {
+            it.lowercase(Locale.getDefault()).startsWith(filter)
         }.toMutableList())
         return true
     }
@@ -103,6 +103,17 @@ class SelectionFragment :
     }
 
     override fun onCityClick(position: Int) {
-        viewModel.addCity(citiesAdapter.cities[position].name)
+        val name = namesAdapter.names[position]
+        requireActivity().closeKeyboard()
+        notifyAboutLoading(name)
+        viewModel.addCity(name)
+    }
+
+    private fun notifyAboutLoading(name: String) {
+        binding.apply {
+            citiesRecyclerView.visibility = View.GONE
+            messageLoading.visibility = View.VISIBLE
+            messageLoading.text = "$loadingTheString $name..."
+        }
     }
 }

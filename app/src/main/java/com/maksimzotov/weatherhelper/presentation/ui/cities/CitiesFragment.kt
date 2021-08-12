@@ -1,15 +1,11 @@
 package com.maksimzotov.weatherhelper.presentation.ui.cities
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -23,9 +19,11 @@ import com.maksimzotov.weatherhelper.domain.entities.Filter
 import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
 import com.maksimzotov.weatherhelper.presentation.main.base.TopLevelFragment
 import com.maksimzotov.weatherhelper.presentation.main.extensions.closeKeyboard
+import com.maksimzotov.weatherhelper.presentation.main.extensions.isNightModeOn
 import com.maksimzotov.weatherhelper.presentation.ui.cities.recyclerview.CitiesAdapter
+import com.maksimzotov.weatherhelper.presentation.main.util.Colors
+import java.util.*
 import javax.inject.Inject
-
 
 class CitiesFragment :
     TopLevelFragment<CitiesFragmentBinding>(CitiesFragmentBinding::inflate),
@@ -39,11 +37,14 @@ class CitiesFragment :
     }
 
     private lateinit var citiesAdapter: CitiesAdapter
-    private var prevBG: Drawable? = null
+    private lateinit var loadingString: String
+    private val colors = Colors()
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
         super.onAttach(context)
+
+        loadingString = getString(R.string.loading)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,21 +72,32 @@ class CitiesFragment :
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_menu, menu)
+        inflater.inflate(R.menu.searh_and_update_menu, menu)
 
         val menuItem = menu.findItem(R.id.menu_search)
         val searchView = menuItem.actionView as SearchView
         searchView.setOnQueryTextListener(this)
+
+        menu.findItem(R.id.menu_update).setOnMenuItemClickListener {
+            val cities = citiesAdapter.cities
+            cities.forEach { it.lastUpdate = "$loadingString..." }
+            citiesAdapter.notifyDataSetChanged()
+            viewModel.updateCities(citiesAdapter.cities)
+            true
+        }
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        Toast.makeText(requireContext(), "Submit", Toast.LENGTH_SHORT).show()
+        val filter = query?.lowercase(Locale.getDefault()) ?: return true
+        val cities = viewModel.cities.value ?: return true
+        citiesAdapter.setData(cities.filter { city ->
+            city.name.lowercase(Locale.getDefault()).startsWith(filter)
+        }.toMutableList())
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        Toast.makeText(requireContext(), "Change", Toast.LENGTH_SHORT).show()
-        return true
+        return onQueryTextSubmit(newText)
     }
 
     private fun configureBinding() {
@@ -110,48 +122,39 @@ class CitiesFragment :
     private fun configureViewModel() {
         viewModel.apply {
             cities.observe(viewLifecycleOwner, { cities ->
-                if (cities != null) {
-                    val filter = filter.value ?: return@observe
-                    if (cities.isEmpty()) {
+                if (cities != null && citiesAreUpdated) {
+                    val filter = filter.value
+                    if (filter != null) {
+                        if (cities.isEmpty()) {
+                            citiesAdapter.setData(cities)
+                            return@observe
+                        }
+                        checkMatchingToFilter(cities, filter)
+                    } else {
                         citiesAdapter.setData(cities)
-                        return@observe
                     }
-                    markCities(cities, filter)
                 }
             })
             filter.observe(viewLifecycleOwner, { filter ->
                 if (filter != null) {
                     val cities = cities.value ?: return@observe
-                    markCities(cities, filter)
+                    checkMatchingToFilter(cities, filter)
                 }
             })
         }
     }
-    private fun markCities(cities: List<City>, filter: Filter) {
-        val firstCity = cities.firstOrNull() ?: return
-        val indices = firstCity.dates.mapIndexed() { index, date ->
-            if (date >= filter.startDate && date <= filter.endDate) {
-                return@mapIndexed index
-            } else {
-                return@mapIndexed -1
-            }
-        }.filter { it != -1 }
-        cities.forEach {  city ->
-            var isMatchesFilter = true
-            for (i in indices) {
-                val temperature = city.temperatures[i]
-                val temperatureMatches =
-                    temperature.min >= filter.temperature.min &&
-                            temperature.max <= filter.temperature.max
-                isMatchesFilter = isMatchesFilter && temperatureMatches
-            }
-            city.isMatchesFilter = isMatchesFilter
-        }
+    private fun checkMatchingToFilter(cities: List<City>, filter: Filter) {
+        cities.forEach { it.checkMatchingToFilter(filter) }
         citiesAdapter.setData(cities)
     }
 
     private fun configureRecyclerView() {
-        citiesAdapter = CitiesAdapter(listOf(), this)
+        citiesAdapter = CitiesAdapter(
+            listOf(),
+            this,
+            requireActivity().isNightModeOn(),
+            colors
+        )
 
         val recyclerView = binding.indicatorsRecyclerView
         recyclerView.adapter = citiesAdapter
@@ -189,12 +192,9 @@ class CitiesFragment :
                 actionState: Int
             ) {
                 super.onSelectedChanged(viewHolder, actionState)
-                if (
-                    actionState == ItemTouchHelper.ACTION_STATE_DRAG ||
-                    actionState == ItemTouchHelper.ACTION_STATE_SWIPE
-                ) {
-                    prevBG = viewHolder?.itemView?.background
-                    viewHolder?.itemView?.background = ColorDrawable(Color.LTGRAY)
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    viewHolder?.itemView?.background =
+                        colors.getColorOnPressed(requireActivity().isNightModeOn())
                 }
             }
 
@@ -203,7 +203,12 @@ class CitiesFragment :
                 viewHolder: RecyclerView.ViewHolder
             ) {
                 super.clearView(recyclerView, viewHolder)
-                viewHolder.itemView.background = prevBG
+                if (viewHolder.adapterPosition >= 0) {
+                    viewHolder.itemView.background = colors.getStandardColor(
+                        requireActivity().isNightModeOn(),
+                        citiesAdapter.cities[viewHolder.adapterPosition].isMatchesToFilter
+                    )
+                }
             }
 
         }).attachToRecyclerView(recyclerView)

@@ -1,19 +1,17 @@
 package com.maksimzotov.weatherhelper.presentation.ui.filter
 
 import androidx.lifecycle.*
+import com.maksimzotov.weatherhelper.domain.entities.*
 import com.maksimzotov.weatherhelper.domain.entities.Date
-import com.maksimzotov.weatherhelper.domain.entities.DefaultFilters
-import com.maksimzotov.weatherhelper.domain.entities.Filter
-import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import com.maksimzotov.weatherhelper.domain.usecases.GetCurrentFilterUseCase
 import com.maksimzotov.weatherhelper.domain.usecases.SetCurrentFilterUseCase
 import com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences
+import com.maksimzotov.weatherhelper.presentation.main.util.DateConverter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 
 class FilterViewModel(
     private val preference: Preferences,
@@ -24,11 +22,13 @@ class FilterViewModel(
     private val dateFormat = dateConverter.dateFormat
     private val defaultDateStr = dateFormat.format(Calendar.getInstance().time)
     private val defaultDate = createDate(defaultDateStr)
-    private val defaultRangeTemperature = 15 to 35
+    private val defaultRangeTemperature = 0 to 0
+    private val defaultRangeHumidity = 0 to 0
 
     val firstDate = MutableLiveData(defaultDateStr)
     val lastDate = MutableLiveData(defaultDateStr)
     val rangeTemperature = MutableLiveData(defaultRangeTemperature)
+    val rangeHumidity = MutableLiveData(defaultRangeHumidity)
 
     val filter: LiveData<Filter?> = when (preference) {
         Preferences.CURRENT_FILTER -> getCurrentFilterUseCase.getCurrentFilter().asLiveData()
@@ -49,17 +49,36 @@ class FilterViewModel(
         return prev
     }
 
+    fun setDefaultFilter() = viewModelScope.launch {
+        setCurrentFilterUseCase.setCurrentFilter(
+            Filter(
+                startDate = defaultDate,
+                endDate = defaultDate,
+                temperature = Temperature(
+                    defaultRangeTemperature.first,
+                    defaultRangeTemperature.second
+                ),
+                humidity = Humidity(
+                    defaultRangeHumidity.first,
+                    defaultRangeHumidity.second
+                )
+            )
+        )
+    }
+
     fun setCurrentFilter() {
         val firstDate = firstDate.value ?: return
         val lastDate = lastDate.value ?: return
         val rangeTemperature = rangeTemperature.value ?: return
+        val rangeHumidity = rangeHumidity.value ?: return
 
         viewModelScope.launch {
             setCurrentFilterUseCase.setCurrentFilter(
                 Filter(
-                    createDate(firstDate),
-                    createDate(lastDate),
-                    Temperature(rangeTemperature.first, rangeTemperature.second)
+                    startDate = createDate(firstDate),
+                    endDate = createDate(lastDate),
+                    temperature = Temperature(rangeTemperature.first, rangeTemperature.second),
+                    humidity = Humidity(rangeHumidity.first, rangeHumidity.second)
                 )
             )
             popBackstack.value = true
@@ -88,7 +107,7 @@ class FilterViewModel(
     }
 
     private fun createDate(dateString: String): Date {
-        val date = dateConverter.fromStringToList(dateString)
+        val date = dateConverter.fromCharSequenceToList(dateString)
         return Date(date[0], date[1], date[2])
     }
 }

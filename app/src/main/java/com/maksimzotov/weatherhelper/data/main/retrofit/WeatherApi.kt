@@ -10,6 +10,7 @@ interface WeatherApi {
     @GET("forecast?")
     suspend fun getCity(
         @Query("q") name: String,
+        @Query("units") units: String = "metric",
         @Query("appid") key: String = "76213d5339b06a994535d0cfcdbeab22"
     ): Response<City>
 }

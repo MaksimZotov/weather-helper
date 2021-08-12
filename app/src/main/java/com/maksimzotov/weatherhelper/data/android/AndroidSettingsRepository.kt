@@ -1,8 +1,9 @@
 package com.maksimzotov.weatherhelper.data.android
 
+import com.maksimzotov.weatherhelper.presentation.entities.settings.HumidityToShow
 import com.maksimzotov.weatherhelper.presentation.entities.settings.BottomNavigation
 import com.maksimzotov.weatherhelper.presentation.entities.settings.DarkTheme
-import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
+import com.maksimzotov.weatherhelper.presentation.entities.settings.TemperatureToShow
 import kotlinx.coroutines.flow.Flow
 
 class AndroidSettingsRepository(private val androidSettingsDao: AndroidSettingsDao) {
@@ -13,8 +14,11 @@ class AndroidSettingsRepository(private val androidSettingsDao: AndroidSettingsD
     val darkTheme: Flow<DarkTheme?> =
         androidSettingsDao.getDarkTheme()
 
-    val temperature: Flow<Temperature?> =
-        androidSettingsDao.getTemperature()
+    val temperatureToShow: Flow<TemperatureToShow?> =
+        androidSettingsDao.getTemperatureToShow()
+
+    val humidityToShow: Flow<HumidityToShow?> =
+        androidSettingsDao.getHumidityToShow()
 
 
     fun setBottomNavigation(bottomNavigation: BottomNavigation) =
@@ -23,6 +27,9 @@ class AndroidSettingsRepository(private val androidSettingsDao: AndroidSettingsD
     fun setDarkTheme(darkTheme: DarkTheme) =
         androidSettingsDao.setDarkTheme(darkTheme)
 
-    fun setTemperature(temperature: Temperature) =
-        androidSettingsDao.setTemperature(temperature)
+    fun setTemperatureToShow(temperatureToShow: TemperatureToShow) =
+        androidSettingsDao.setTemperatureToShow(temperatureToShow)
+
+    fun setHumidityToShow(humidityToShow: HumidityToShow) =
+        androidSettingsDao.setHumidityToShow(humidityToShow)
 }

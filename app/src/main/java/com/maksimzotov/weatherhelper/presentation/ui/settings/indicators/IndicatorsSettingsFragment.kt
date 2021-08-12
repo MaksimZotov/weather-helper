@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.maksimzotov.weatherhelper.databinding.IndicatorsSettingsFragmentBinding
 import com.maksimzotov.weatherhelper.presentation.main.activity.SettingsSharedViewModel
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
@@ -19,7 +18,7 @@ class IndicatorsSettingsFragment
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
-            switchTemperature.setOnCheckedChangeListener { buttonView, isChecked ->
+            switchTemperature.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     viewModel.showTemperature()
                 } else {
@@ -27,9 +26,21 @@ class IndicatorsSettingsFragment
                 }
             }
 
-            val temperature = settingsSharedViewModel.temperature.value
-            switchTemperature.isChecked = temperature != null && temperature.isAble
+            switchHumidity.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    viewModel.showHumidity()
+                } else {
+                    viewModel.hideHumidity()
+                }
+            }
+
+            val temperature = settingsSharedViewModel.temperatureToShow.value
+            switchTemperature.isChecked = temperature == null || temperature.isAble
             switchTemperature.jumpDrawablesToCurrentState()
+
+            val humidity = settingsSharedViewModel.humidityToShow.value
+            switchHumidity.isChecked = humidity == null || humidity.isAble
+            switchHumidity.jumpDrawablesToCurrentState()
         }
     }
 }

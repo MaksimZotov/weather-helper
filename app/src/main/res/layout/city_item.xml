@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="64dp"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/city_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:text="City"
-            android:textSize="24sp" />
+            android:layout_gravity="center_vertical"
+            android:textSize="24sp"
+            android:layout_marginStart="16dp"/>
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/city_last_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:gravity="end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"/>
+
+    </LinearLayout>
 </layout>

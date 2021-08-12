@@ -15,6 +15,11 @@ data class DarkTheme(val isAble: Boolean)  {
 }
 
 @Entity(tableName = AndroidSettingsTableNames.TEMPERATURE)
-data class Temperature(val isAble: Boolean)  {
+data class TemperatureToShow(val isAble: Boolean)  {
+    @PrimaryKey var id = 0
+}
+
+@Entity(tableName = AndroidSettingsTableNames.HUMIDITY)
+data class HumidityToShow(val isAble: Boolean)  {
     @PrimaryKey var id = 0
 }

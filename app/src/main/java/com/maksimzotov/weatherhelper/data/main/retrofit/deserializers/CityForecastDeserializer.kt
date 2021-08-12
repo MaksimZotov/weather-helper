@@ -1,64 +1,113 @@
 package com.maksimzotov.weatherhelper.data.main.retrofit.deserializers
 
-import com.google.gson.*
+import android.annotation.SuppressLint
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
 import com.maksimzotov.weatherhelper.domain.entities.City
 import com.maksimzotov.weatherhelper.domain.entities.Date
+import com.maksimzotov.weatherhelper.domain.entities.Humidity
 import com.maksimzotov.weatherhelper.domain.entities.Temperature
-import java.lang.IllegalArgumentException
 import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class CityForecastDeserializer : JsonDeserializer<City> {
-    private val fromKelvin = 273.15
-    private val separatorIndex = 10
+class CityForecastDeserializer @Inject constructor() : JsonDeserializer<City> {
 
-    private val mainRegex = Regex(
-        "(\\d{4}-\\d{2}-\\d{2} 00:00:00)|\"temp_min\":[\\d\\.]+,\"temp_max\":[\\d\\.]+"
-    )
-    private val dateRegex = Regex("\\d{4}-\\d{2}-\\d{2} 00:00:00")
-    private val separatorRegex = Regex(":|,")
-
+    @SuppressLint("SimpleDateFormat")
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
         context: JsonDeserializationContext?
     ): City {
-        val jsonTemp = json ?: throw IllegalArgumentException("json must not be null")
-        val jsonData = jsonTemp.toString()
-        val name =
-            jsonTemp.asJsonObject.get("city").asJsonObject.get("name").toString().trim('\"')
-        val datesToTemperatures = getTemperaturesFromJson(jsonData)
-        val dates = datesToTemperatures.keys.map { dateString ->
-            val dateList = dateString.split('-')
-            Date(dateList[2].toInt(), dateList[1].toInt(), dateList[0].toInt())
+        json
+            ?: throw IllegalArgumentException("json must not be null")
+
+        val name = json
+            .asJsonObject
+            .get("city")
+            .asJsonObject
+            .get("name")
+            .toString().trim('\"')
+
+        val list = json
+            .asJsonObject
+            .get("list")
+            .asJsonArray
+
+        val datesString = mutableListOf<String>()
+        val temperatures = mutableListOf<Pair<Int, Int>>()
+        val humidityList = mutableListOf<Int>()
+
+        for (item in list) {
+            val itemAsJsonObject = item.asJsonObject
+            datesString.add(
+                itemAsJsonObject
+                    .get("dt_txt")
+                    .toString()
+                    .trimStart('\"')
+                    .substringBefore(' ')
+            )
+
+            val mainAsJsonObject = itemAsJsonObject.get("main").asJsonObject
+            val minTemperature = mainAsJsonObject.get("temp_min").toString().toFloat().roundToInt()
+            val maxTemperature = mainAsJsonObject.get("temp_max").toString().toFloat().roundToInt()
+            temperatures.add(minTemperature to maxTemperature)
+            humidityList.add(mainAsJsonObject.get("humidity").toString().toFloat().roundToInt())
         }
-        val temperatures = datesToTemperatures.values.toList()
-        return City(name, dates, temperatures)
-    }
 
-    fun getTemperaturesFromJson(jsonData: String): Map<String, Temperature> {
-        val matches = mainRegex.findAll(jsonData)
-        val parsedJsonData = matches.map { it.value }.joinToString().split(", ")
 
-        val temperatures = mutableMapOf<String, Temperature>()
-        var minMaxTemperatures = mutableListOf<Int>() to mutableListOf<Int>()
+        var prevDate = datesString.first()
 
-        for (item in parsedJsonData) {
-            if (item.matches(dateRegex)) {
-                temperatures[item.substring(0, separatorIndex)] = Temperature(
-                    minMaxTemperatures.first.minOrNull()!!,
-                    minMaxTemperatures.first.maxOrNull()!!
-                )
+        val prevTemperatures = temperatures.first()
+        var minMaxTemperatures =
+            mutableListOf(prevTemperatures.first) to mutableListOf(prevTemperatures.second)
+
+        var minHumidity = humidityList.first()
+        var maxHumidity = minHumidity
+
+        val datesForCity = mutableListOf<Date>()
+        val temperaturesForCity = mutableListOf<Temperature>()
+        val humidityListForCity = mutableListOf<Humidity>()
+
+        for (i in 1 until datesString.size) {
+            if (datesString[i] != prevDate) {
+                val minTemperature = minMaxTemperatures.first.minOrNull()!!
+                val maxTemperature = minMaxTemperatures.second.maxOrNull()!!
+                datesForCity.add(createDate(prevDate))
+                temperaturesForCity.add(Temperature(minTemperature, maxTemperature))
+                humidityListForCity.add(Humidity(minHumidity, maxHumidity))
                 minMaxTemperatures = mutableListOf<Int>() to mutableListOf<Int>()
+                prevDate = datesString[i]
+                minHumidity = humidityList[i]
+                maxHumidity = minHumidity
             } else {
-                val temp = item.split(separatorRegex)
-                val min = temp[1].toDouble() - fromKelvin
-                val max = temp[3].toDouble() - fromKelvin
-                minMaxTemperatures.first.add(min.roundToInt())
-                minMaxTemperatures.second.add(max.roundToInt())
+                val curTemperatures = temperatures[i]
+                minMaxTemperatures.first.add(curTemperatures.first)
+                minMaxTemperatures.second.add(curTemperatures.second)
+
+                val curHumidity = humidityList[i]
+                if (curHumidity < minHumidity) minHumidity = curHumidity
+                if (curHumidity > maxHumidity) maxHumidity = curHumidity
             }
         }
 
-        return temperatures
+        val dateFormat = SimpleDateFormat("dd.MM HH:mm")
+        val lastUpdate = dateFormat.format(Calendar.getInstance().time)
+
+        return City(
+            name = name,
+            dates = datesForCity,
+            temperatures = temperaturesForCity,
+            humidityList = humidityListForCity,
+            lastUpdate = lastUpdate
+        )
+    }
+
+    private fun createDate(dateString: String): Date {
+        val list = dateString.split('-').reversed().map { it.toInt() }
+        return Date(list[0], list[1], list[2])
     }
 }

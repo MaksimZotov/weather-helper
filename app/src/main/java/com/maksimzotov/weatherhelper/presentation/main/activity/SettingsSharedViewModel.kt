@@ -7,13 +7,22 @@ import androidx.lifecycle.asLiveData
 import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.presentation.entities.settings.BottomNavigation
 import com.maksimzotov.weatherhelper.presentation.entities.settings.DarkTheme
-import com.maksimzotov.weatherhelper.presentation.entities.settings.Temperature
+import com.maksimzotov.weatherhelper.presentation.entities.settings.HumidityToShow
+import com.maksimzotov.weatherhelper.presentation.entities.settings.TemperatureToShow
 
 class SettingsSharedViewModel(application: Application): AndroidViewModel(application)  {
     private val settingsRepo = application.appComponent.androidSettingsRepository
 
-    val bottomNavigation: LiveData<BottomNavigation?> = settingsRepo.bottomNavigation.asLiveData()
-    val darkTheme: LiveData<DarkTheme?> = settingsRepo.darkTheme.asLiveData()
+    val bottomNavigation: LiveData<BottomNavigation?> =
+        settingsRepo.bottomNavigation.asLiveData()
 
-    val temperature: LiveData<Temperature?> = settingsRepo.temperature.asLiveData()
+    val darkTheme: LiveData<DarkTheme?> =
+        settingsRepo.darkTheme.asLiveData()
+
+
+    val temperatureToShow: LiveData<TemperatureToShow?> =
+        settingsRepo.temperatureToShow.asLiveData()
+
+    val humidityToShow: LiveData<HumidityToShow?> =
+        settingsRepo.humidityToShow.asLiveData()
 }

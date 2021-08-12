@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="about">
-        Приложение для выбора места отпуска на основе прогноза погоды со следующими возможностями:\n\n1) Выбор города и просмотр прогноза погоды в нем\n\n2) Создание списка интересующих городов\n\n3) Создание фильтров для интересующих городов (в фильтре указываются ожидаемые параметры погоды (температура, влажность и т.д.) в определённые промежутки времени)\n\n4) Пуш-уведомления в случае, если какой-то из городов попал под установленный фильтр (или наоборот перестал соответствовать фильтру)\n\n5) Сортировка городов по их названиям и по созданным фильтрам\n\nВ проекте следует применить:\n\nClean architecture\nMVVM\nDagger\nRetrofit\nRoom\nGson\nCoroutines\nNavigation Component\nDataBinding\nLiveData\nFlow\nJUnit\n\nPS: Да, как идея для стартапа звучит не очень, но как способ закрепить некоторый технологический стек - пойдёт \n
+    <string name="about_body">
+        Built with:\n\nClean architecture\nMVVM\nDagger\nRetrofit\nRoom\nGson\nCoroutines\nNavigation Component\nDataBinding\nSafe args\nLiveData\nFlow\nJUnit
     </string>
+    <string name="failed_to_load_the_city">Failed to load the city</string>
     <string-array name="preferences">
         <item>Current filter</item>
         <item>Temperate climate</item>
         <item>Dry climate</item>
     </string-array>
-    <array name="initial_range_slider_values">
-        <item>15.0</item>
-        <item>35.0</item>
+    <array name="initial_range_slider_temperature_values">
+        <item>0.0</item>
+        <item>0.0</item>
+    </array>
+    <array name="initial_range_slider_humidity_values">
+        <item>0.0</item>
+        <item>0.0</item>
     </array>
 </resources>

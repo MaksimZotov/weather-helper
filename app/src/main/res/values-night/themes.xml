@@ -15,6 +15,7 @@
         <item name="android:navigationBarColor">#494949</item>
         <item name="colorNavDrawerHeaderBG">#005C3C</item>
         <item name="colorNavDrawerText">#DDDDDD</item>
-        <item name="colorBottomSheetBG">#454545</item>
+        <item name="colorBottomSheetTop">#454545</item>
+        <item name="colorBottomSheetBody">#353535</item>
     </style>
 </resources>
