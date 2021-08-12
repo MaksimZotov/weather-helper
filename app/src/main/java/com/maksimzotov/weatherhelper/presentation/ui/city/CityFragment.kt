@@ -56,9 +56,4 @@ class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::infl
             true
         }
     }
-
-    override fun onPause() {
-        binding.viewPager.adapter = null
-        super.onPause()
-    }
 }

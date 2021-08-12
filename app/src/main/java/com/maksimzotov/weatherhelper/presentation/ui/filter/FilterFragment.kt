@@ -26,8 +26,6 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
     }
 
     private val dateConverter: DateConverter = DateConverter()
-    private val dateFormat = dateConverter.dateFormat
-
     private val toStrConverter = ToStringConverter()
 
     private val onFirstDateSetListener =
