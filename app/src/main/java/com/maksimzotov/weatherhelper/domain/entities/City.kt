@@ -34,12 +34,12 @@ data class City(
             val temperature = temperatures[i]
             val temperatureMatches =
                 temperature.min >= filter.temperature.min &&
-                        temperature.max <= filter.temperature.max
+                temperature.max <= filter.temperature.max
 
             val humidity = humidityList[i]
             val humidityMatches =
                 humidity.min >= filter.humidity.min &&
-                        humidity.max <= filter.humidity.max
+                humidity.max <= filter.humidity.max
 
             _isMatchesToFilter = isMatchesToFilter && temperatureMatches && humidityMatches
 
@@ -49,4 +49,3 @@ data class City(
         }
     }
 }
-
