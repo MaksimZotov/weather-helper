@@ -25,18 +25,24 @@ class SelectionFragment :
     SearchView.OnQueryTextListener,
     NamesAdapter.OnCityClickListener {
 
-    private val namesStorage = NamesStorage()
-    private val namesAdapter = NamesAdapter(namesStorage.names, this)
-
     @Inject
     lateinit var viewModelFactory: SelectionViewModel.Factory
     private val viewModel by viewModels<SelectionViewModel> {
         viewModelFactory
     }
 
+    private val namesStorage = NamesStorage()
+    private val namesAdapter = NamesAdapter(namesStorage.names, this)
+
+    private lateinit var failedToLoadCityString: String
+    private lateinit var loadingTheString: String
+
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
         super.onAttach(context)
+
+        failedToLoadCityString = getString(R.string.failed_to_load_the_city)
+        loadingTheString = getString(R.string.loading_the)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +69,7 @@ class SelectionFragment :
 
             loadedCity.observe(viewLifecycleOwner, { response ->
                 if (!response.isSuccessful) {
-                    val msg = "Failed to load the city"
+                    val msg = failedToLoadCityString
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                     binding.citiesRecyclerView.visibility = View.VISIBLE
                     binding.messageLoading.visibility = View.GONE
@@ -107,7 +113,7 @@ class SelectionFragment :
         binding.apply {
             citiesRecyclerView.visibility = View.GONE
             messageLoading.visibility = View.VISIBLE
-            messageLoading.text = "Loading the $name..."
+            messageLoading.text = "$loadingTheString $name..."
         }
     }
 }

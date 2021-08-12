@@ -39,10 +39,15 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
             viewModel.lastDate.value = dateConverter.fromIntsToString(dayOfMonth, month, year)
         }
 
+    private lateinit var temperatureString: String
+    private lateinit var humidityString: String
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
         super.onAttach(context)
+
+        temperatureString = getString(R.string.temperature)
+        humidityString = getString(R.string.humidity)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,7 +61,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 .addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
 
                 override fun onStartTrackingTouch(slider: RangeSlider) {
-                    rangeSliderTextTemperature.text = "${R.string.temperature} [?; ?]"
+                    rangeSliderTextTemperature.text = "$temperatureString [?; ?]"
                 }
                 override fun onStopTrackingTouch(slider: RangeSlider) {
                     viewModel.rangeTemperature.value =
@@ -72,7 +77,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 .addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
 
                     override fun onStartTrackingTouch(slider: RangeSlider) {
-                        rangeSliderTextHumidity.text = "${R.string.humidity} [?; ?]"
+                        rangeSliderTextHumidity.text = "$humidityString [?; ?]"
                     }
                     override fun onStopTrackingTouch(slider: RangeSlider) {
                         viewModel.rangeHumidity.value =
@@ -101,7 +106,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
             rangeTemperature.observe(viewLifecycleOwner, { range ->
                 val min = toStrConverter.convertTemperature(range.first)
                 val max = toStrConverter.convertTemperature(range.second)
-                binding.rangeSliderTextTemperature.text = "${R.string.temperature} [$min; $max]"
+                binding.rangeSliderTextTemperature.text = "$temperatureString [$min; $max]"
 
                 binding.rangeSliderTemperature.setValues(
                     range.first.toFloat(),
@@ -111,7 +116,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
             rangeHumidity.observe(viewLifecycleOwner, { range ->
                 val min = toStrConverter.convertHumidity(range.first)
                 val max = toStrConverter.convertHumidity(range.second)
-                binding.rangeSliderTextHumidity.text = "${R.string.humidity} [$min; $max]"
+                binding.rangeSliderTextHumidity.text = "$humidityString [$min; $max]"
 
                 binding.rangeSliderHumidity.setValues(
                     range.first.toFloat(),

@@ -37,13 +37,14 @@ class CitiesFragment :
     }
 
     private lateinit var citiesAdapter: CitiesAdapter
-
+    private lateinit var loadingString: String
     private val colors = Colors()
-
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
         super.onAttach(context)
+
+        loadingString = getString(R.string.loading)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +80,7 @@ class CitiesFragment :
 
         menu.findItem(R.id.menu_update).setOnMenuItemClickListener {
             val cities = citiesAdapter.cities
-            cities.forEach { it.lastUpdate = "Loading..." }
+            cities.forEach { it.lastUpdate = "$loadingString..." }
             citiesAdapter.notifyDataSetChanged()
             viewModel.updateCities(citiesAdapter.cities)
             true
