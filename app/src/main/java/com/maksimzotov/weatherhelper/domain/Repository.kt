@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface Repository {
+    suspend fun loadCity(name: String): Response<City>
+
     val currentFilter: Flow<Filter?>
     fun setCurrentFilter(filter: Filter)
-
-    suspend fun loadCity(name: String): Response<City>
 
     fun getCities(): Flow<List<City>?>
     fun addCity(city: City)

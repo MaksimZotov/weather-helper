@@ -11,9 +11,10 @@ import com.maksimzotov.weatherhelper.domain.entities.Temperature
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class CityForecastDeserializer : JsonDeserializer<City> {
+class CityForecastDeserializer @Inject constructor() : JsonDeserializer<City> {
 
     @SuppressLint("SimpleDateFormat")
     override fun deserialize(
