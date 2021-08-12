@@ -191,10 +191,7 @@ class CitiesFragment :
                 actionState: Int
             ) {
                 super.onSelectedChanged(viewHolder, actionState)
-                if (
-                    actionState == ItemTouchHelper.ACTION_STATE_DRAG ||
-                    actionState == ItemTouchHelper.ACTION_STATE_SWIPE
-                ) {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     viewHolder?.itemView?.background =
                         colors.getColorOnPressed(requireActivity().isNightModeOn())
                 }
