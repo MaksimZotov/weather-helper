@@ -10,12 +10,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.CityFragmentBinding
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
+import com.maksimzotov.weatherhelper.presentation.main.extensions.setTitleInAppBar
 import com.maksimzotov.weatherhelper.presentation.ui.city.viewpager.ForecastAdapter
 import com.maksimzotov.weatherhelper.presentation.ui.indicators.IndicatorsFragment
 
 class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::inflate) {
 
     private val args by navArgs<CityFragmentArgs>()
+    private val city by lazy { args.city }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +27,8 @@ class CityFragment : BaseFragment<CityFragmentBinding>(CityFragmentBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val city = args.city
+        requireActivity().setTitleInAppBar(city.name)
+
         val fragments = city.temperatures.mapIndexed { index, temperature ->
             IndicatorsFragment(
                 temperature,
