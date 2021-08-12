@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/citiesFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.cities.CitiesFragment"
-        android:label="Cities"
+        android:label="@string/cities"
         tools:layout="@layout/cities_fragment">
         <action
             android:id="@+id/action_citiesFragment_to_selectionFragment"
@@ -23,12 +23,12 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.about.AboutFragment"
-        android:label="About"
+        android:label="@string/about"
         tools:layout="@layout/about_fragment" />
     <fragment
         android:id="@+id/selectionFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.selection.SelectionFragment"
-        android:label="Selection"
+        android:label="@string/selection"
         tools:layout="@layout/selection_fragment">
         <action
             android:id="@+id/action_selectionFragment_to_cityFragment"
@@ -37,18 +37,18 @@
     <fragment
         android:id="@+id/filterFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.filter.FilterFragment"
-        android:label="Filter"
-        tools:layout="@layout/filter_fragment" >
+        android:label="@string/filter"
+        tools:layout="@layout/filter_fragment">
         <argument
             android:name="preference"
-            app:argType="com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences"
-            android:defaultValue="CURRENT_FILTER" />
+            android:defaultValue="CURRENT_FILTER"
+            app:argType="com.maksimzotov.weatherhelper.presentation.entities.filters.Preferences" />
     </fragment>
     <fragment
         android:id="@+id/cityFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.city.CityFragment"
-        android:label="City"
-        tools:layout="@layout/city_fragment" >
+        android:label="@string/city"
+        tools:layout="@layout/city_fragment">
         <action
             android:id="@+id/action_cityFragment_to_indicatorsFragment"
             app:destination="@id/indicatorsSettingsFragment" />
@@ -59,11 +59,11 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.main.SettingsFragment"
-        android:label="Settings"
+        android:label="@string/settings"
         tools:layout="@layout/settings_fragment" />
     <fragment
         android:id="@+id/indicatorsSettingsFragment"
         android:name="com.maksimzotov.weatherhelper.presentation.ui.settings.indicators.IndicatorsSettingsFragment"
-        android:label="Indicators"
+        android:label="@string/indicators"
         tools:layout="@layout/indicators_settings_fragment" />
 </navigation>

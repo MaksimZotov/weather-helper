@@ -24,7 +24,7 @@
                     android:paddingTop="16dp"
                     android:paddingRight="16dp"
                     android:paddingBottom="16dp"
-                    android:text="@string/about"
+                    android:text="@string/about_body"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="16sp" />
 

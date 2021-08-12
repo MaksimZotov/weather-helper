@@ -11,13 +11,13 @@
             android:id="@+id/switch_temperature"
             android:layout_width="192dp"
             android:layout_height="wrap_content"
-            android:text="Temperature" />
+            android:text="@string/temperature" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch_humidity"
             android:layout_width="192dp"
             android:layout_height="wrap_content"
-            android:text="Humidity" />
+            android:text="@string/humidity" />
 
     </LinearLayout>
 </layout>

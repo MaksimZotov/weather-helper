@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.slider.RangeSlider
+import com.maksimzotov.weatherhelper.R
 import com.maksimzotov.weatherhelper.databinding.FilterFragmentBinding
 import com.maksimzotov.weatherhelper.di.main.appComponent
 import com.maksimzotov.weatherhelper.presentation.main.base.BaseFragment
@@ -55,7 +56,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 .addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
 
                 override fun onStartTrackingTouch(slider: RangeSlider) {
-                    rangeSliderTextTemperature.text = "Temperature [?; ?]"
+                    rangeSliderTextTemperature.text = "${R.string.temperature} [?; ?]"
                 }
                 override fun onStopTrackingTouch(slider: RangeSlider) {
                     viewModel.rangeTemperature.value =
@@ -71,7 +72,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
                 .addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
 
                     override fun onStartTrackingTouch(slider: RangeSlider) {
-                        rangeSliderTextHumidity.text = "Humidity [?; ?]"
+                        rangeSliderTextHumidity.text = "${R.string.humidity} [?; ?]"
                     }
                     override fun onStopTrackingTouch(slider: RangeSlider) {
                         viewModel.rangeHumidity.value =
@@ -100,7 +101,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
             rangeTemperature.observe(viewLifecycleOwner, { range ->
                 val min = toStrConverter.convertTemperature(range.first)
                 val max = toStrConverter.convertTemperature(range.second)
-                binding.rangeSliderTextTemperature.text = "Temperature [$min; $max]"
+                binding.rangeSliderTextTemperature.text = "${R.string.temperature} [$min; $max]"
 
                 binding.rangeSliderTemperature.setValues(
                     range.first.toFloat(),
@@ -110,7 +111,7 @@ class FilterFragment : BaseFragment<FilterFragmentBinding>(FilterFragmentBinding
             rangeHumidity.observe(viewLifecycleOwner, { range ->
                 val min = toStrConverter.convertHumidity(range.first)
                 val max = toStrConverter.convertHumidity(range.second)
-                binding.rangeSliderTextHumidity.text = "Humidity [$min; $max]"
+                binding.rangeSliderTextHumidity.text = "${R.string.humidity} [$min; $max]"
 
                 binding.rangeSliderHumidity.setValues(
                     range.first.toFloat(),

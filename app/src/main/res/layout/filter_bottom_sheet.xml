@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:gravity="center"
-                android:text="Filter"
+                android:text="@string/filter"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="16sp" />
 
@@ -52,8 +52,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Preferences:"
-                android:layout_marginLeft="50dp"
+                android:text="@string/preferences"
+                android:layout_marginStart="50dp"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="16sp" />
 
@@ -61,7 +61,7 @@
                 android:id="@+id/filter_preference"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="42dp"
+                android:layout_marginStart="42dp"
                 android:entries="@array/preferences" />
 
         </LinearLayout>
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="8dp"
-            android:text="Edit"/>
+            android:text="@string/edit"/>
 
 
     </LinearLayout>
