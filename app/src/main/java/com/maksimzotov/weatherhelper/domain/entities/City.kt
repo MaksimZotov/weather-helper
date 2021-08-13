@@ -22,16 +22,16 @@ data class City(
 
     fun checkMatchingToFilter(filter: Filter) {
         if (filter.startDate < dates.first() || filter.endDate > dates.last()) {
+            _isMatchesToFilter = false
             return
         }
         val indices = dates.mapIndexed() { index, date ->
             if (date >= filter.startDate && date <= filter.endDate) {
                 return@mapIndexed index
             } else {
-                _isMatchesToFilter = false
-                return
+                return@mapIndexed -1
             }
-        }
+        }.filter { it != -1 }
 
         _isMatchesToFilter = true
         for (i in indices) {
