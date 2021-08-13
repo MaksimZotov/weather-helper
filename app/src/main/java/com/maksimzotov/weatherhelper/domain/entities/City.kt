@@ -21,7 +21,11 @@ data class City(
     val isMatchesToFilter get () = _isMatchesToFilter
 
     fun checkMatchingToFilter(filter: Filter) {
-        if (filter.startDate < dates.first() || filter.endDate > dates.last()) {
+        if (
+            filter.startDate > filter.endDate ||
+            filter.startDate < dates.first() ||
+            filter.endDate > dates.last()
+        ) {
             _isMatchesToFilter = false
             return
         }
