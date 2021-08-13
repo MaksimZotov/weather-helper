@@ -44,6 +44,8 @@ class CitiesFragment :
 
     private lateinit var loadingString: String
     private lateinit var noInternetString: String
+    private lateinit var updatingString: String
+    private lateinit var updatedString: String
 
     override fun onAttach(context: Context) {
         requireActivity().appComponent.inject(this)
@@ -51,6 +53,8 @@ class CitiesFragment :
 
         loadingString = getString(R.string.loading)
         noInternetString = getString(R.string.you_have_not_internet)
+        updatingString = "${getString(R.string.updating)}..."
+        updatedString = getString(R.string.updated)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +90,7 @@ class CitiesFragment :
 
         menu.findItem(R.id.menu_update).setOnMenuItemClickListener {
             if (requireActivity().checkInternet()) {
+                Toast.makeText(context, updatingString, Toast.LENGTH_LONG).show()
                 viewModel.updateCities(citiesAdapter.cities)
             } else {
                 Toast.makeText(context, noInternetString, Toast.LENGTH_SHORT).show()
@@ -130,6 +135,9 @@ class CitiesFragment :
         viewModel.apply {
             cities.observe(viewLifecycleOwner, { cities ->
                 if (cities != null && citiesAreUpdated) {
+                    if (userMustBeNotifiedAboutUpdatedCities) {
+                        Toast.makeText(context, updatedString, Toast.LENGTH_SHORT).show()
+                    }
                     val filter = filter.value
                     if (filter != null) {
                         if (cities.isEmpty()) {
