@@ -22,6 +22,15 @@ class CitiesViewModel(
     private var _citiesAreUpdated = true
     val citiesAreUpdated get() = _citiesAreUpdated
 
+    private var _userMustBeNotifiedAboutUpdatedCities = false
+    val userMustBeNotifiedAboutUpdatedCities: Boolean get() {
+        if (_userMustBeNotifiedAboutUpdatedCities) {
+            _userMustBeNotifiedAboutUpdatedCities = false
+            return true
+        }
+        return false
+    }
+
     fun updateCities(cities: List<City>) {
         _citiesAreUpdated = false
         viewModelScope.launch {
@@ -36,6 +45,7 @@ class CitiesViewModel(
                 }
             }
             _citiesAreUpdated = true
+            _userMustBeNotifiedAboutUpdatedCities = true
         }
     }
 
